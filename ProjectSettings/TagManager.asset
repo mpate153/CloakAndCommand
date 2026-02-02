@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - TowerOrigin
+  - Tower
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Bullet
   - 
   - 
   - 
