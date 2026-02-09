@@ -12,13 +12,14 @@ public class Turret : MonoBehaviour
     [Header("Attributes")]
     [SerializeField] private bool spawnBullet = true;
     [SerializeField] private float range;
-    [SerializeField] private float attackTime;
+    [SerializeField] private float damage;
+    [SerializeField] private float attackInterval;
     [SerializeField] private bool useCharges = false;
     [SerializeField] private float chargeTime;
     [SerializeField] private int maxCharges;
 
-    private Transform target;
-    private float attackCooldown;
+    private GameObject target;
+    private float attackTimer;
     private int currentCharges;
     private float chargeProgress;
 
@@ -26,12 +27,12 @@ public class Turret : MonoBehaviour
     private void Update()
     {
 
-        if (attackCooldown < attackTime)
+        if (attackTimer < attackInterval)
         {
-            attackCooldown += Time.deltaTime;
+            attackTimer += Time.deltaTime;
         }
         
-        if (attackCooldown >= attackTime)
+        if (attackTimer >= attackInterval)
         {
             findTarget();
             if (target != null)
@@ -39,16 +40,14 @@ public class Turret : MonoBehaviour
                 if (!useCharges)
                 {
                     attack();
-                    attackCooldown = 0;
+                    attackTimer = 0;
                 }
                 else if (currentCharges > 0)
                 {
                     attack();
-                    attackCooldown = 0;
+                    attackTimer = 0;
                     currentCharges--;
                 }
-                
-                
             }
         }
 
@@ -75,23 +74,37 @@ public class Turret : MonoBehaviour
             GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
             bulletScript.SetTarget(target);
-            Debug.Log("Attacked with bullet");
+            bulletScript.SetDamage(damage);
         }
         else
         {
-            Debug.Log("Attacked without bullet");
+            EnemyMovement targetScript = target.GetComponent<EnemyMovement>();
+            targetScript.TakeDamage(damage);
         }
     }
 
     private void findTarget()
     {
+
         target = null;
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2)transform.position, 0f, enemyMask);
 
         if (hits.Length > 0)
         {
-            target = hits[0].transform;
+            target = hits[0].collider.gameObject;
+            EnemyMovement targetScript = target.GetComponent<EnemyMovement>();
+            EnemyMovement comparisonScript;
+
+            for (int i = 1; i < hits.Length; i++)
+            {
+                comparisonScript = hits[i].collider.gameObject.GetComponent<EnemyMovement>();
+                if (comparisonScript.GetPathDist() > targetScript.GetPathDist())
+                {
+                    target = hits[i].collider.gameObject;
+                    targetScript = comparisonScript;
+                }
+            }
         }
     }
 

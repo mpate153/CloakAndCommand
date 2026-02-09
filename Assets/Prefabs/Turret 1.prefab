@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.25117928, g: 0.3910014, b: 0.75, a: 1}
@@ -110,7 +110,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 4158397670719491030, guid: 5023010d828db5846b49ff5dc9f3860e, type: 3}
   spawnBullet: 1
   range: 3
-  attackTime: 1.5
+  damage: 4
+  attackInterval: 1.5
   useCharges: 0
   chargeTime: 0
   maxCharges: 0

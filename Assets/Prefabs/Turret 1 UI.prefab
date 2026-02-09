@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.25117928, g: 0.3910014, b: 0.75, a: 1}
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a37f65b37713540a3f65a912519ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drag_and_Drop
-  turretPrefab: {fileID: 1214845203001742084, guid: 38e46091ee53b46438935e5a79ac1c31, type: 3}
+  turretPrefab: {fileID: 1214845203001742084, guid: 10973c403c6fcf548adc5d676bedae69, type: 3}
 --- !u!58 &7836840730908945116
 CircleCollider2D:
   m_ObjectHideFlags: 0

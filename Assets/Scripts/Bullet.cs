@@ -7,24 +7,31 @@ public class Bullet : MonoBehaviour
     [Header("Attributes")]
     [SerializeField] private float speed = 3f;
 
-    private Transform bulletTarget;
+    private GameObject bulletTarget;
+    private float bulletDamage = 0f;
 
     private void Update()
     {
         if (bulletTarget != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, bulletTarget.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, bulletTarget.transform.position, speed * Time.deltaTime);
         }
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(GameObject target)
     {
         bulletTarget = target;
     }
 
+    public void SetDamage(float damage)
+    {
+        bulletDamage = damage;
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("Bullet Destroyed");
+        EnemyMovement objectHitScript = other.gameObject.GetComponent<EnemyMovement>();
+        objectHitScript.TakeDamage(bulletDamage);
         Destroy(gameObject);
     }
 }
