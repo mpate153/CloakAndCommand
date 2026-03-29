@@ -16,10 +16,10 @@ TagManager:
   - 
   - Water
   - UI
-  - Enemy
-  - TowerBase
-  - Tower
-  - Bullet
+  - Base/Floor
+  - Characters
+  - Projectile
+  - Walls
   - 
   - 
   - 
