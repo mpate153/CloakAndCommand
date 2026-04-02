@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1374217774, guid: 1ff621bafaff38f4ebcc1baf669ab883, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -133,12 +133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b77cd79585b954fb8dda86c4ab3f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TDEnemyProperties
-  health: 10
+  health: 5
   speed: 3
   reachDistance: 0.05
+  damage: 2.5
   togglePathDist: 0
   toggleHealth: 0
-  toggleCount: 1
   functionDelaySeconds: 2
 --- !u!61 &270445051281941497
 BoxCollider2D:

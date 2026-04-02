@@ -11,6 +11,7 @@ public class EnemyPathing : MonoBehaviour
 
     [SerializeField] private bool generatePath;
     [SerializeField] private bool visualizeGrid;
+    [SerializeField] private bool visualizeFinalPath;
     [SerializeField] private bool ignoreDiagonals = false;
 
     private Vector2 startPos;
@@ -29,8 +30,9 @@ public class EnemyPathing : MonoBehaviour
     public List<Transform> transformPoints = new List<Transform>(); //Make this private, and accessible via get functions
 
     [SerializeField] public Tilemap targetTileMap;
+    [SerializeField] public Tile targetPathTile;
 
-    private void Start()
+    private void Awake()
     {
         //Find tilemap
         if (targetTileMap != null){ Debug.Log("Found it"); }
@@ -42,13 +44,17 @@ public class EnemyPathing : MonoBehaviour
         endPos = targetPos.transform.position;
     }
 
-    private void Update()
+    private void Start()
     {
         if (generatePath && !pathGenerated)
         {
             GenerateGrid();
             FindPath(startPos, endPos);
             pathGenerated = true;
+            if (visualizeFinalPath)
+            {
+                ShowPath();
+            }
         }
         else if (!generatePath)
         {
@@ -56,11 +62,16 @@ public class EnemyPathing : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        //use this to continually update path?
+    }
+
     private void GenerateGrid()
     {
         cells = new Dictionary<Vector2, Cell>();
 
-        //Get the bounds of the tile map (in the positive space)
+        //Get the bounds of the tile map
         targetTileMap.CompressBounds();
         
         //Create a grid to based on the information, adding empty cells
@@ -161,7 +172,7 @@ public class EnemyPathing : MonoBehaviour
         {
             for (float y = cellPos.y - cellHeight; y <= cellHeight + cellPos.y; y += cellHeight)
             {
-                //Ignore Diagonals; Not an elegant solution
+                //Ignore Diagonals via a series of checks and alterations to the iteration counter
                 if (ignoreDiagonals)
                 {
                     if (x == cellPos.x - cellWidth && y == cellPos.y - cellHeight || 
@@ -207,6 +218,20 @@ public class EnemyPathing : MonoBehaviour
         int horizontalMoveRequired = highest - lowest;
         return lowest * 14 + horizontalMoveRequired * 10; //14 refers do diagonal movement required
         //I wonder if errors occur since 14 is being multiplied when ignoreDiagonals is checked on
+    }
+
+    private void ShowPath()
+    {
+        Vector3Int tileInfo;
+        foreach(KeyValuePair<Vector2,Cell> kvp in cells)
+        {
+            if (finalPath.Contains(kvp.Key))
+            {
+                tileInfo = new(Mathf.RoundToInt(kvp.Key.x), Mathf.RoundToInt(kvp.Key.y), 0);
+                targetTileMap.SetTile(tileInfo, targetPathTile);
+                targetTileMap.RefreshTile(tileInfo);
+            }
+        }
     }
 
     private void OnDrawGizmos()

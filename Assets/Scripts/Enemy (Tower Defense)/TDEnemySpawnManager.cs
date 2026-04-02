@@ -14,19 +14,21 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] private bool stopSpawn = false;
 
     private int spawnCount = 0;
-
-    void Awake()
+    void Start()
     {
+        if(TDEnemyCount.Instance != null)
+        {
+            TDEnemyCount.Instance.SetTotal(spawnLimit);
+        }
+        else
+        {
+            Debug.Log("What?");
+        }
+        StartCoroutine(InitDelay());
         if (toggleCount)
         {
             StartCoroutine(DisplayCurrCount());
         }
-    }
-
-    void Start()
-    {
-        TDEnemyCount.Instance.SetTotal(spawnLimit);
-        StartCoroutine(InitDelay());
     }
 
     IEnumerator InitDelay()
