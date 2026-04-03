@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class EnemyPathing : MonoBehaviour
 {
+    public Transform[] pointsOfIntrest;
+    
     //SET TO SAME AS TILEMAP DATA
     [SerializeField] private float cellHeight = 1f;
     [SerializeField] private float cellWidth = 1f;
@@ -13,6 +18,7 @@ public class EnemyPathing : MonoBehaviour
     [SerializeField] private bool visualizeGrid;
     [SerializeField] private bool visualizeFinalPath;
     [SerializeField] private bool ignoreDiagonals = false;
+    [SerializeField] private bool includePOIs = false;
 
     private Vector2 startPos;
     private Vector2 endPos;
@@ -25,11 +31,12 @@ public class EnemyPathing : MonoBehaviour
 
     [SerializeField] private List<Vector2> cellsToSearch;
     [SerializeField] private List<Vector2> searchedCells;
-    [SerializeField] private List<Vector2> finalPath;
+    [SerializeField] private List<Vector2> finalPath = new();
     
-    public List<Transform> transformPoints = new List<Transform>(); //Make this private, and accessible via get functions
+    private List<Transform> transformPoints = new();
 
     [SerializeField] public Tilemap targetTileMap;
+    [SerializeField] public Tilemap targetDrawMap;
     [SerializeField] public Tile targetPathTile;
 
     private void Awake()
@@ -49,8 +56,16 @@ public class EnemyPathing : MonoBehaviour
         if (generatePath && !pathGenerated)
         {
             GenerateGrid();
-            FindPath(startPos, endPos);
+            if (includePOIs)
+            {
+                FindPathWithPOI(startPos, endPos, pointsOfIntrest);
+            }
+            else
+            {
+                FindPath(startPos, endPos);
+            }
             pathGenerated = true;
+            GenerateTransformList();
             if (visualizeFinalPath)
             {
                 ShowPath();
@@ -105,11 +120,66 @@ public class EnemyPathing : MonoBehaviour
         }
     }
 
+    private void FindPathWithPOI(Vector2 startPos, Vector2 endPos, Transform[] POIList)
+    {
+        //generate path from start to 1 element of POI list, then append to the path by looping through POI list
+        //then w/ final POI element, append path to final POI point to endPos
+
+        Vector2 prevPOI;
+        Vector2 currPOI;
+        int index = 1;
+
+        if(POIList != null)
+        {
+            prevPOI = POIList[^1].transform.position; //^1 gives last element or .Length - 1
+        }
+        else
+        {
+            //Abort if list not found
+            Debug.Log("Uh oh");
+            return;
+        }
+
+        FindPath(prevPOI, endPos);
+
+        foreach (Transform t in POIList.Reverse()) //Will go in reverse order, due to find path backtracking
+        {
+            currPOI = t.transform.position; //only used for comparision
+
+            //Check if only element in the list
+            if (POIList.Length == 1)
+            {
+                FindPath(startPos, prevPOI);
+                break;
+            }
+            //Skip "first" element
+            else if (currPOI == prevPOI)
+            {
+                index++;
+                continue;
+            }
+            //Check if this is the last element, end the loop
+            else if (index == POIList.Length)
+            {
+                FindPath(currPOI, prevPOI);
+                FindPath(startPos, currPOI);
+                break;
+            }
+            //If all checks fail, that means there are more POIs to join
+            else
+            {
+                FindPath(currPOI, prevPOI);
+                prevPOI = currPOI;
+                index++;
+            }
+        }
+    }
+
     private void FindPath(Vector2 startPos, Vector2 endPos)
     {
         searchedCells = new List<Vector2>();
         cellsToSearch = new List<Vector2> { startPos };
-        finalPath = new List<Vector2>();
+        //finalPath = new List<Vector2>();
 
         Cell startCell = cells[startPos];
         startCell.gCost = 0;
@@ -118,6 +188,7 @@ public class EnemyPathing : MonoBehaviour
 
         while (cellsToSearch.Count > 0)
         {
+            
             Vector2 cellToSearch = cellsToSearch[0];
 
             foreach (Vector2 pos in cellsToSearch)
@@ -136,29 +207,21 @@ public class EnemyPathing : MonoBehaviour
             //Trace back fom destination to beginning
             if (cellToSearch == endPos)
             {
-                //Offset used to place transform data point in the center of a tilemap cell
-                Vector2 offset = new(0.5f, 0.5f);
                 Cell pathCell = cells[endPos];
 
                 while (pathCell.position != startPos)
                 {
                     finalPath.Add(pathCell.position);
 
-                    //Create gameobject that only holds transform data
-                    GameObject wayPoint = new("WayPoint");
-                    wayPoint.transform.position = pathCell.position + offset;
-                    transformPoints.Add(wayPoint.transform);
-
                     pathCell = cells[pathCell.connection];
                 }
 
                 finalPath.Add(startPos);
 
-                //Create last gameobject that holds transform data
-                GameObject wayPoint2 = new("WayPoint");
-                wayPoint2.transform.position = pathCell.position + offset;
-                transformPoints.Add(wayPoint2.transform);
-
+                //Clear cells to reset heuristic data
+                cells.Clear();
+                //Regenerate grid to reinitialize heuristic data
+                GenerateGrid();
                 return;
             }
 
@@ -228,10 +291,30 @@ public class EnemyPathing : MonoBehaviour
             if (finalPath.Contains(kvp.Key))
             {
                 tileInfo = new(Mathf.RoundToInt(kvp.Key.x), Mathf.RoundToInt(kvp.Key.y), 0);
-                targetTileMap.SetTile(tileInfo, targetPathTile);
-                targetTileMap.RefreshTile(tileInfo);
+                targetDrawMap.SetTile(tileInfo, targetPathTile);
+                targetDrawMap.RefreshTile(tileInfo);
             }
         }
+    }
+
+    private void GenerateTransformList()
+    {
+        //Offset used to place transform data point in the center of a tilemap cell
+        Vector2 offset = new(0.5f, 0.5f);
+        foreach (Vector2 point in finalPath)
+        {
+            Vector2 cellInfo = new(point.x, point.y);
+
+            //Create gameobject that only holds transform data
+            GameObject wayPoint = new("WayPoint");
+            wayPoint.transform.position = cellInfo + offset;
+            transformPoints.Add(wayPoint.transform);
+        }
+    }
+
+    public List<Transform> GetTransformList()
+    {
+        return transformPoints;
     }
 
     private void OnDrawGizmos()

@@ -1008,8 +1008,8 @@ public static class SceneEnemySave
         PtHealth.SetValue(ep, d.health);
         int idx = d.currWaypointIndex;
         if (PtPath != null && PtPath.GetValue(ep) is EnemyPathing path
-            && path.transformPoints != null && path.transformPoints.Count > 0)
-            idx = Mathf.Clamp(idx, 0, path.transformPoints.Count - 1);
+            && path.GetTransformList() != null && path.GetTransformList().Count > 0)
+            idx = Mathf.Clamp(idx, 0, path.GetTransformList().Count - 1);
         PtIdx.SetValue(ep, idx);
     }
 
