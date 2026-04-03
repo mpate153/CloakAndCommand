@@ -25,6 +25,10 @@ public class SceneNavigator : MonoBehaviour
     [Tooltip("Loaded additively so gameplay/menu underneath is not unloaded.")]
     [SerializeField] string settingsSceneName = "SettingsMenu";
 
+    [Header("Game over retry")]
+    [Tooltip("When using GoBackToPreviousSceneGameOver, delete saved layout for the level so the run restarts fresh.")]
+    [SerializeField] bool deleteLayoutSaveOnGameOverRetry = true;
+
     /// <summary>Remembers the active scene, then loads <paramref name="sceneName"/> (single mode — replaces current).</summary>
     public void LoadScene(string sceneName)
     {
@@ -106,6 +110,47 @@ public class SceneNavigator : MonoBehaviour
         string previous = PreviousScenes.Pop();
         if (!string.IsNullOrEmpty(previous))
             SceneManager.LoadScene(previous);
+    }
+
+    /// <summary>
+    /// Hook this to the Game Over retry button. Uses <see cref="PlayerTracker.GetLastLevelScene"/> (set on death),
+    /// otherwise pops one entry from history if any. Deletes layout save when <see cref="deleteLayoutSaveOnGameOverRetry"/> is on,
+    /// clears history, then loads the level. If nothing is found, loads <see cref="backFallbackSceneName"/>.
+    /// </summary>
+    public void GoBackToPreviousSceneGameOver()
+    {
+        if (TryUnloadSettingsOverlayIfOpen())
+            return;
+
+        string target = PlayerTracker.GetLastLevelScene();
+        if (string.IsNullOrEmpty(target) && PreviousScenes.Count > 0)
+            target = PreviousScenes.Pop();
+
+        if (string.IsNullOrEmpty(target))
+        {
+            string fb = string.IsNullOrEmpty(backFallbackSceneName) ? "MainMenu" : backFallbackSceneName;
+            if (!string.IsNullOrEmpty(fb))
+                SceneManager.LoadScene(fb);
+            return;
+        }
+
+        if (deleteLayoutSaveOnGameOverRetry)
+        {
+            try
+            {
+                string path = SaveManager.GetSavedLayoutPathForScene(target);
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[SceneNavigator] Could not delete layout save for game over retry: {e.Message}");
+            }
+        }
+
+        ClearHistory();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(target);
     }
 
     bool TryUnloadSettingsOverlayIfOpen()

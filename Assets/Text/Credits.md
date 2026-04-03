@@ -92,6 +92,12 @@ Kego Wigwas
 #### Gameplay Programmers – Tower-Defense
 Kego Wigwas & Mishaal Patel
 
+#### AI Engineering
+Kego Wigwas
+
+#### Turret Design
+Mishaal Patel
+
 #### UI Programmer
 Hari Vallath
 
@@ -158,6 +164,9 @@ Hari Vallath
 ##### Chiptune Heist Music
 Performed by Bertsz (Freesound)
 
+##### Cyberpunk Alleyway
+Performed by Bertsz (Freesound)
+
 ##### Piano Sonata No. 14
 Composed by Ludwig van Beethoven
 Performed by Nesrality (Pixabay.com)
@@ -189,7 +198,7 @@ Performed by worthahep88 (Freesound)
 
 #### QA Analyst
 Hari Vallath
-Mishaal Patel
+Kego Wigwas
 
 #### Pizza Manager
 Dr. Abedalrhman Alkhateeb

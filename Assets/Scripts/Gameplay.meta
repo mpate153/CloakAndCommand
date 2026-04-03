@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/TowerDefense/Turrets/PierceBullet.prefab.meta
+guid: 5ffd8fd08675b3a45a148276472f1202
+PrefabImporter:
+========
+guid: 09a2b3c4d5e6f708192a3b4c5d6e7f88
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> 5d5d391274333f1a691d2d89a22c2c40ddaa096a:Assets/Scripts/Gameplay.meta
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -53,16 +53,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536602687297761198, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536602687297761198, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 0.19215687
       objectReference: {fileID: 0}
     - target: {fileID: 2536602687297761198, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
       propertyPath: m_Color.g
-      value: 0.84623873
+      value: 0.19215687
       objectReference: {fileID: 0}
     - target: {fileID: 2536602687297761198, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536602687297761198, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4781410671006465938, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
       propertyPath: kind
@@ -103,6 +111,10 @@ PrefabInstance:
     - target: {fileID: 4781410671006465938, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
       propertyPath: sprinterReinforceChanceAfterFirstCycle
       value: 0.489
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892746510238475621, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
+      propertyPath: m_Controller
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6617707452494615976, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
       propertyPath: m_Name
