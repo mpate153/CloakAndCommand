@@ -11,6 +11,7 @@ public class TDEnemyProperties: MonoBehaviour
     [SerializeField] private float health = 10f;
     [SerializeField] private float speed = 1.0f;
     [SerializeField] private float reachDistance = 0.05f;
+    [SerializeField] private float damage = 2.0f;
     private int currWaypointIndex = 0;
     private EnemyPathing targetScript;
     [SerializeField] private bool togglePathDist = false;
@@ -68,6 +69,7 @@ public class TDEnemyProperties: MonoBehaviour
         {
             TDEnemyCount.Instance.DecrementCount(); //Will go into negatives if toggleCount disabled
             TDEnemyCount.Instance.IncrementDefeat();
+            TDEnemyCount.Instance.CheckVictory();
             Debug.Log("Defeated: " + TDEnemyCount.Instance.GetDefeatCount());
             Destroy(gameObject);
         }
@@ -88,10 +90,12 @@ public class TDEnemyProperties: MonoBehaviour
 
             if (currWaypointIndex < 0)
             {
+                enabled = false; //stops moving the object by disabling the Move function
                 Debug.Log("EndReached");
                 TDEnemyCount.Instance.DecrementCount();
-                //Either, trigger objective damage and/or defeat condition here
-                enabled = false; //stops moving the object by disabling the Move function
+                TDEnemyCount.Instance.CheckVictory();
+                TDObjectiveHealth.Instance.DecrementHealth(damage);
+                TDObjectiveHealth.Instance.CheckHealth();
                 Destroy(gameObject);
             }
         }

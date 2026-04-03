@@ -33,9 +33,7 @@ public class TDEnemyCount : MonoBehaviour
     public void SetTotal(int total) { eTotal = total; }
     public int GetCount() { return eCount; }
     public int GetDefeatCount() { return eDefeat; }
-
-    //Update used to track TD end level conditions
-    public void Update()
+    public void CheckVictory()
     {
         //All enemies defeated
         if (eDefeat == eTotal)
@@ -45,10 +43,10 @@ public class TDEnemyCount : MonoBehaviour
             Debug.Break(); //COMMENT THIS OUT IN FINAL RELEASE
         }
         //All enemies spawned but NOT all defeated
-        if(eCount == 0 && eSpawned == eTotal)
+        if (eCount == 0 && eSpawned == eTotal)
         {
-            Debug.Log("All enemies managed");
-            //Debug.Break();
+            Debug.Log("All enemies managed"); //This message will always print
+            Debug.Break();
         }
     }
 }
