@@ -19,6 +19,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Relative Movement")]
     [SerializeField] private float rotationSpeed = 10f; // Degrees per second
 
+    [Header("Animation")]
+    [Tooltip("Optional. Assign Player.controller (same GameObject as Sprite Renderer). Drives Speed / Rolling / Attack.")]
+    [SerializeField] private Animator animator;
+    static readonly int AnimSpeed = Animator.StringToHash("Speed");
+    static readonly int AnimRolling = Animator.StringToHash("Rolling");
+    static readonly int AnimAttack = Animator.StringToHash("Attack");
+
     [Header("Time Slow")]
     public bool canTimeSlow = false;
     public float slowDuration = 2f;
@@ -51,6 +58,15 @@ public class PlayerMovement : MonoBehaviour
         normalColliderOffset = collider.offset;
 
         myBody.gravityScale = 0f;
+        if (animator == null)
+            TryGetComponent(out animator);
+    }
+
+    /// <summary>Call from combat when you add an attack; fires the <c>Attack</c> trigger on the Animator.</summary>
+    public void PlayAttackAnimation()
+    {
+        if (animator != null && animator.runtimeAnimatorController != null)
+            animator.SetTrigger(AnimAttack);
     }
 
     void Start()
@@ -63,10 +79,16 @@ public class PlayerMovement : MonoBehaviour
         if (canMove && !isRolling)
             PlayerMoveKeyboard();
 
-        if (moveX != 0 && !isRolling)
+        if (sr != null && animator == null && moveX != 0 && !isRolling)
             sr.flipX = moveX < 0;
 
         ApplyRotation();
+
+        if (animator != null && animator.runtimeAnimatorController != null)
+        {
+            animator.SetFloat(AnimSpeed, myBody.linearVelocity.magnitude);
+            animator.SetBool(AnimRolling, isRolling);
+        }
 
         // TIME SLOW
         if (canTimeSlow && !isSlowing && PlayerControls.Instance != null && PlayerControls.Instance.fire3Pressed)
@@ -152,7 +174,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveX != 0 || moveY != 0)
         {
-            float targetAngle = Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg;
+            // Atan2(y,x) is 0 for world +X; most top-down sprites face +Y at identity — offset fixes 90° mismatch.
+            float targetAngle = Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg - 90f;
             float currentAngle = transform.eulerAngles.z;
             float smoothAngle = Mathf.LerpAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0, 0, smoothAngle);
@@ -187,8 +210,8 @@ public class PlayerMovement : MonoBehaviour
         rollTimer = rollDuration;
         rollCooldownTimer = rollCooldown;
 
-        // Same axis ApplyRotation uses: local +X follows movement, so roll matches facing at any angle.
-        rollDirection = (Vector2)transform.right;
+        // Forward is local +Y (sprite “up”); matches ApplyRotation after the -90° offset from Atan2.
+        rollDirection = ((Vector2)transform.up).normalized;
 
         collider.size = rollColliderSize;
         collider.offset = rollColliderOffset;

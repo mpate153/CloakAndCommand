@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 /// <summary>
-/// Central game settings: preferred load from <see cref="GameSave"/> JSON when present,
+/// Central game settings: preferred load from <see cref="SaveGame"/> JSON when present,
 /// otherwise PlayerPrefs. <see cref="Save"/> flushes both. Display applies on startup;
 /// assign an AudioMixer on a bootstrap object for sound.
 /// </summary>
@@ -40,7 +40,7 @@ public static class GameSettings
     public static void EnsureLoaded()
     {
         if (_loaded) return;
-        if (GameSave.TryLoad(out GameSaveData file) && file.settings != null
+        if (SaveGame.TryLoad(out SaveGameData file) && file.settings != null
             && !LooksLikeJsonUtilityEmptySettings(file.settings))
         {
             ApplyFromSaveSettings(file.settings);
@@ -114,7 +114,7 @@ public static class GameSettings
         EnsureLoaded();
         _master = Mathf.Clamp01(linear01);
         PlayerPrefs.SetFloat(KeyMaster, _master);
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void SetMusicVolume(float linear01)
@@ -122,7 +122,7 @@ public static class GameSettings
         EnsureLoaded();
         _music = Mathf.Clamp01(linear01);
         PlayerPrefs.SetFloat(KeyMusic, _music);
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void SetSfxVolume(float linear01)
@@ -130,7 +130,7 @@ public static class GameSettings
         EnsureLoaded();
         _sfx = Mathf.Clamp01(linear01);
         PlayerPrefs.SetFloat(KeySfx, _sfx);
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void SetFullscreen(bool value)
@@ -138,7 +138,7 @@ public static class GameSettings
         EnsureLoaded();
         _fullscreen = value;
         PlayerPrefs.SetInt(KeyFullscreen, value ? 1 : 0);
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void SetVsync(bool value)
@@ -146,7 +146,7 @@ public static class GameSettings
         EnsureLoaded();
         _vsync = value;
         PlayerPrefs.SetInt(KeyVsync, value ? 1 : 0);
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void SetQualityLevel(int index)
@@ -155,14 +155,14 @@ public static class GameSettings
         index = Mathf.Clamp(index, 0, QualitySettings.names.Length - 1);
         _quality = index;
         PlayerPrefs.SetInt(KeyQuality, _quality);
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void Save()
     {
         EnsureLoaded();
         PlayerPrefs.Save();
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     public static void ResetToDefaults()

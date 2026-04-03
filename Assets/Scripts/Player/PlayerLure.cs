@@ -88,8 +88,9 @@ public class PlayerLure : MonoBehaviour
         {
             if (pm.moveX != 0f || pm.moveY != 0f)
                 return new Vector2(pm.moveX, pm.moveY).normalized;
-            return (Vector2)pm.transform.right;
+            // Match PlayerMovement facing / roll: local +Y is "straight ahead" (ApplyRotation uses Atan2 - 90°).
+            return ((Vector2)pm.transform.up).normalized;
         }
-        return Vector2.right;
+        return Vector2.up;
     }
 }

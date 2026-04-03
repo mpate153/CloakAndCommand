@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8487494783419192532}
   - component: {fileID: 346362002089062539}
   - component: {fileID: 4728391001}
+  - component: {fileID: 4683109848344954148}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -32,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.02, y: -0.04, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2212930150798374532}
@@ -87,12 +88,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -5653878121705019575, guid: 6d3bf782f2ba3a6469125f68d3600566, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.46, y: 0.01}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -179,6 +180,7 @@ MonoBehaviour:
   isGrounded: 1
   canMove: 1
   rotationSpeed: 10
+  animator: {fileID: 0}
   canTimeSlow: 0
   slowDuration: 2
   slowFactor: 0.5
@@ -237,10 +239,34 @@ MonoBehaviour:
   lurePrefab: {fileID: 5738291001, guid: d4e5f678901234567890abcdef123400, type: 3}
   throwSpeed: 9
   spawnOffset: 0.45
-  cooldownSeconds: 12
-  throwSfx: []
+  cooldownSeconds: 8.5
+  throwSfx:
+  - {fileID: 8300000, guid: a9656b57a15b3f54f958a5e678a9ff38, type: 3}
+  - {fileID: 8300000, guid: 05ce7a88032ebf9469a797d60e7ae2bd, type: 3}
   throwSfxVolume: 1
-  throwSfxOutput: {fileID: 0}
+  throwSfxOutput: {fileID: -1231956911201580566, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
+--- !u!95 &4683109848344954148
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429311956669006329}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e183425b77069c04a8b1145681c02e42, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &8832045151921058443
 PrefabInstance:
   m_ObjectHideFlags: 0

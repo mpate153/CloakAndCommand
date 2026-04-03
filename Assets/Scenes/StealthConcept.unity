@@ -127,26 +127,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4728391001, guid: 907aa76e341de534fb264211f4008d78, type: 3}
-      propertyPath: throwSfxOutput
-      value: 
-      objectReference: {fileID: -1231956911201580566, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
-    - target: {fileID: 4728391001, guid: 907aa76e341de534fb264211f4008d78, type: 3}
-      propertyPath: cooldownSeconds
-      value: 8.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4728391001, guid: 907aa76e341de534fb264211f4008d78, type: 3}
-      propertyPath: throwSfx.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4728391001, guid: 907aa76e341de534fb264211f4008d78, type: 3}
-      propertyPath: 'throwSfx.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: a9656b57a15b3f54f958a5e678a9ff38, type: 3}
-    - target: {fileID: 4728391001, guid: 907aa76e341de534fb264211f4008d78, type: 3}
-      propertyPath: 'throwSfx.Array.data[1]'
-      value: 
-      objectReference: {fileID: 8300000, guid: 05ce7a88032ebf9469a797d60e7ae2bd, type: 3}
     - target: {fileID: 429311956669006329, guid: 907aa76e341de534fb264211f4008d78, type: 3}
       propertyPath: m_Name
       value: Player
@@ -326,6 +306,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 4967942319676234795, guid: 17ce79a842126e44198dad739da81e08, type: 3}
+      propertyPath: orthographic size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6685502845871395603, guid: 17ce79a842126e44198dad739da81e08, type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6685502845871395603, guid: 17ce79a842126e44198dad739da81e08, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -373,13 +361,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 399721682388381196, guid: 17ce79a842126e44198dad739da81e08, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 756757891}
-    - targetCorrespondingSourceObject: {fileID: 399721682388381196, guid: 17ce79a842126e44198dad739da81e08, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 756757892}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17ce79a842126e44198dad739da81e08, type: 3}
 --- !u!1 &409774609
 GameObject:
@@ -828,43 +810,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7763587112786788088, guid: 907aa76e341de534fb264211f4008d78, type: 3}
   m_PrefabInstance: {fileID: 205553193}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &756757885 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 399721682388381196, guid: 17ce79a842126e44198dad739da81e08, type: 3}
+--- !u!114 &756757892 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 172391138220785759, guid: 17ce79a842126e44198dad739da81e08, type: 3}
   m_PrefabInstance: {fileID: 227373028}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &756757891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756757885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80d0c9f9c042aa3429908d2232a1bf59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SettingsAudioBootstrap
-  mixer: {fileID: 24100000, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
-  masterParam: MasterVol
-  musicParam: MusicVol
-  sfxParam: SfxVol
-  sfxOutputGroup: {fileID: -1231956911201580566, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
-  musicOutputGroup: {fileID: -3345614666380507768, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
---- !u!114 &756757892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756757885}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a8f3c2e1d0b4a8f9e7c6d5b4a302918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneNavigator
-  playSceneName: StealthConcept
-  backFallbackSceneName: MainMenu
+--- !u!1 &881100001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 881100002}
+  - component: {fileID: 881100003}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &881100002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881100001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &881100003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881100001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e2c9a1846d403fb5e81d6c2a904eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  loadOnStart: 1
+  saveOnApplicationQuit: 1
+  loadDelaySeconds: 0.15
+  hideSceneUntilLayoutApplied: 1
+  layoutRevealFadeOutSeconds: 0.12
+  skipUI: 1
+  skipCameras: 1
+  skipLights: 1
+  saveWhenPaused: 1
+  autoSaveIntervalSeconds: 15
+  logSaveLoad: 0
 --- !u!1001 &939667180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1701,57 +1712,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d73c17fb743e0fa4399425ace1a03d15, type: 3}
---- !u!1 &881100001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 881100002}
-  - component: {fileID: 881100003}
-  m_Layer: 0
-  m_Name: SaveManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &881100002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881100001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &881100003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881100001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e2c9a1846d403fb5e81d6c2a904eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
-  loadOnStart: 1
-  saveOnApplicationQuit: 1
-  loadDelaySeconds: 0.15
-  skipUI: 1
-  skipCameras: 1
-  skipLights: 1
-  logSaveLoad: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

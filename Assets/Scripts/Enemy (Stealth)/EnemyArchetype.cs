@@ -126,7 +126,7 @@ public class EnemyArchetype : MonoBehaviour
                 sprinterApproachRingMax,
                 sprinterSweepOrbitRadius,
                 offscreenMarginWorld);
-            WatcherSummonSaveLink.Tag(go, sprinterPrefab);
+            SaveSummonedEnemies.Tag(go, sprinterPrefab);
             go.GetComponent<EnemyArchetype>()?.WakeFromWatcherSummon();
         }
     }
@@ -146,7 +146,7 @@ public class EnemyArchetype : MonoBehaviour
                 Debug.LogError($"{nameof(EnemyArchetype)}: ring prefab did not instantiate as GameObject.");
                 continue;
             }
-            WatcherSummonSaveLink.Tag(go, prefab);
+            SaveSummonedEnemies.Tag(go, prefab);
             go.GetComponent<EnemyArchetype>()?.WakeFromWatcherSummon();
         }
     }

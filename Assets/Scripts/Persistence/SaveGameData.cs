@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-/// <summary>Serializable settings block stored inside <see cref="GameSaveData"/>.</summary>
+/// <summary>Serializable settings block stored inside <see cref="SaveGameData"/>.</summary>
 [Serializable]
 public class SettingsSaveData
 {
@@ -17,7 +17,7 @@ public class SettingsSaveData
 
 /// <summary>Top-level save document: extend with level/progress fields later.</summary>
 [Serializable]
-public class GameSaveData
+public class SaveGameData
 {
     public int version = 1;
     public SettingsSaveData settings = new SettingsSaveData();

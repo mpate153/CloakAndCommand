@@ -86,6 +86,9 @@ Human Commander – Kego Wigwas
 #### Gameplay Programmer – Stealth
 Hari Vallath
 
+#### with Additional Programming by
+Kego Wigwas
+
 #### Gameplay Programmers – Tower-Defense
 Kego Wigwas & Mishaal Patel
 
@@ -205,10 +208,15 @@ Dr. Abedalrhman Alkhateeb
 
 
 #### Technology Stack
-Game Engine – Unity
-IDE – Visual Studio 2022
-Audio Editing – Audacity
 
+#### Built with
+Unity
+
+#### Developed in
+Visual Studio
+
+#### Audio Processed with
+Audacity
 
 
 

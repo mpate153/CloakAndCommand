@@ -60,7 +60,7 @@ public class SaveManager : MonoBehaviour
     const string FilePrefix = "SceneLayout_";
 
     /// <summary>Increment when JSON shape changes; still loads older files without gameplay blocks.</summary>
-    public const int CurrentSnapshotVersion = 4;
+    public const int CurrentSnapshotVersion = 7;
 
     Coroutine _autoSaveRoutine;
     GameObject _loadCurtainRoot;
@@ -113,7 +113,7 @@ public class SaveManager : MonoBehaviour
     void PersistLayoutAndSettings()
     {
         SaveLayout();
-        GameSave.PersistSettingsFromRuntime();
+        SaveGame.PersistSettingsFromRuntime();
     }
 
     void Start()
@@ -193,7 +193,7 @@ public class SaveManager : MonoBehaviour
         foreach (GameObject root in scene.GetRootGameObjects())
             CollectGameplayRecursive(root.transform, scene, patrols, brains);
 
-        WatcherSummonedEnemyRecord[] watcherSummoned = BuildWatcherSummonedSnapshot(scene);
+        SaveSummonedEnemyRecord[] saveSummonedEnemies = BuildSaveSummonedEnemiesSnapshot(scene);
 
         var snapshot = new SceneLayoutSnapshot
         {
@@ -202,7 +202,7 @@ public class SaveManager : MonoBehaviour
             transforms = list.ToArray(),
             enemyPatrols = patrols.ToArray(),
             enemyBrains = brains.ToArray(),
-            watcherSummoned = watcherSummoned
+            saveSummonedEnemies = saveSummonedEnemies
         };
 
         string path = GetFilePath(scene.name);
@@ -210,7 +210,7 @@ public class SaveManager : MonoBehaviour
         {
             File.WriteAllText(path, JsonUtility.ToJson(snapshot, true), Encoding.UTF8);
             if (logSaveLoad)
-                Debug.Log($"[SaveManager] Saved {list.Count} transforms, {patrols.Count} patrols, {brains.Count} brains, {watcherSummoned.Length} watcher summons → {path}", this);
+                Debug.Log($"[SaveManager] Saved {list.Count} transforms, {patrols.Count} patrols, {brains.Count} brains, {saveSummonedEnemies.Length} summoned enemies → {path}", this);
         }
         catch (Exception e)
         {
@@ -238,7 +238,11 @@ public class SaveManager : MonoBehaviour
             SceneLayoutSnapshot snapshot;
             try
             {
-                snapshot = JsonUtility.FromJson<SceneLayoutSnapshot>(File.ReadAllText(path, Encoding.UTF8));
+                string jsonText = File.ReadAllText(path, Encoding.UTF8);
+                if (jsonText.IndexOf("\"saveSummonedEnemies\"", StringComparison.Ordinal) < 0
+                    && jsonText.IndexOf("\"watcherSummoned\"", StringComparison.Ordinal) >= 0)
+                    jsonText = jsonText.Replace("\"watcherSummoned\"", "\"saveSummonedEnemies\"");
+                snapshot = JsonUtility.FromJson<SceneLayoutSnapshot>(jsonText);
             }
             catch (Exception e)
             {
@@ -250,7 +254,7 @@ public class SaveManager : MonoBehaviour
                 return;
 
             SpawnMissingPersistedRoots(scene, snapshot.transforms);
-            HashSet<string> idsAppliedInWatcherRestore = RestoreWatcherSummonedEnemies(scene, snapshot.watcherSummoned);
+            HashSet<string> idsAppliedInSummonedRestore = RestoreSaveSummonedEnemies(scene, snapshot.saveSummonedEnemies);
 
             int applied = 0;
             foreach (TransformRecord rec in snapshot.transforms)
@@ -264,19 +268,16 @@ public class SaveManager : MonoBehaviour
                 t.rotation = rec.worldRotation;
                 t.localScale = rec.localScale;
 
-                if (rec.hasSpriteFlip && t.TryGetComponent<SpriteRenderer>(out var sr))
-                {
-                    sr.flipX = rec.spriteFlipX;
-                    sr.flipY = rec.spriteFlipY;
-                }
+                if (t.TryGetComponent<SpriteRenderer>(out var sr))
+                    ApplySpriteRendererState(rec, sr);
 
                 if (t.TryGetComponent<Rigidbody2D>(out var rb) && rb.bodyType != RigidbodyType2D.Static)
                 {
                     rb.position = t.position;
                     rb.rotation = t.eulerAngles.z;
                     bool skipSavedVelocity = !string.IsNullOrEmpty(rec.persistentId)
-                        && idsAppliedInWatcherRestore != null
-                        && idsAppliedInWatcherRestore.Contains(rec.persistentId);
+                        && idsAppliedInSummonedRestore != null
+                        && idsAppliedInSummonedRestore.Contains(rec.persistentId);
                     if (rec.hasRigidbody2DState && !skipSavedVelocity)
                     {
                         rb.linearVelocity = rec.rb2dLinearVelocity;
@@ -293,7 +294,7 @@ public class SaveManager : MonoBehaviour
                 {
                     if (string.IsNullOrEmpty(er.hierarchyPath) && string.IsNullOrEmpty(er.persistentId))
                         continue;
-                    if (!string.IsNullOrEmpty(er.persistentId) && idsAppliedInWatcherRestore != null && idsAppliedInWatcherRestore.Contains(er.persistentId))
+                    if (!string.IsNullOrEmpty(er.persistentId) && idsAppliedInSummonedRestore != null && idsAppliedInSummonedRestore.Contains(er.persistentId))
                         continue;
                     Transform t = FindTransformForEnemyRecord(scene, er.hierarchyPath, er.persistentId);
                     if (t == null || !t.TryGetComponent<EnemyPatrol>(out var ep))
@@ -308,7 +309,7 @@ public class SaveManager : MonoBehaviour
                 {
                     if (er.data == null || (string.IsNullOrEmpty(er.hierarchyPath) && string.IsNullOrEmpty(er.persistentId)))
                         continue;
-                    if (!string.IsNullOrEmpty(er.persistentId) && idsAppliedInWatcherRestore != null && idsAppliedInWatcherRestore.Contains(er.persistentId))
+                    if (!string.IsNullOrEmpty(er.persistentId) && idsAppliedInSummonedRestore != null && idsAppliedInSummonedRestore.Contains(er.persistentId))
                         continue;
                     Transform t = FindTransformForEnemyRecord(scene, er.hierarchyPath, er.persistentId);
                     if (t == null || !t.TryGetComponent<EnemyAI>(out var ai))
@@ -437,11 +438,7 @@ public class SaveManager : MonoBehaviour
         }
 
         if (t.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
-        {
-            rec.hasSpriteFlip = true;
-            rec.spriteFlipX = spriteRenderer.flipX;
-            rec.spriteFlipY = spriteRenderer.flipY;
-        }
+            CaptureSpriteRendererState(spriteRenderer, rec);
 
         if (t.TryGetComponent<Rigidbody2D>(out var rb) && rb.bodyType != RigidbodyType2D.Static)
         {
@@ -474,6 +471,124 @@ public class SaveManager : MonoBehaviour
 
         for (int i = 0; i < t.childCount; i++)
             CollectGameplayRecursive(t.GetChild(i), scene, patrols, brains);
+    }
+
+    static void CaptureSpriteRendererState(SpriteRenderer sr, TransformRecord rec)
+    {
+        rec.hasSpriteFlip = true;
+        rec.spriteFlipX = sr.flipX;
+        rec.spriteFlipY = sr.flipY;
+
+        rec.hasSpriteExtraVisual = true;
+        rec.savedSpriteColor = sr.color;
+        rec.spriteSortingOrder = sr.sortingOrder;
+        rec.spriteSortingLayerName = sr.sortingLayerName;
+
+        if (sr.sprite == null)
+        {
+            rec.hasSpriteReference = false;
+            rec.spriteName = string.Empty;
+            rec.spriteTextureGuid = string.Empty;
+            rec.spriteResourcesPath = string.Empty;
+            return;
+        }
+
+        rec.hasSpriteReference = true;
+        rec.spriteName = sr.sprite.name;
+#if UNITY_EDITOR
+        Texture2D tex = sr.sprite.texture;
+        if (tex != null)
+        {
+            string texPath = AssetDatabase.GetAssetPath(tex);
+            if (!string.IsNullOrEmpty(texPath))
+            {
+                rec.spriteTextureGuid = AssetDatabase.AssetPathToGUID(texPath);
+                string rel = TryGetResourcesRelativePath(texPath);
+                rec.spriteResourcesPath = rel ?? string.Empty;
+            }
+            else
+            {
+                rec.spriteTextureGuid = string.Empty;
+                rec.spriteResourcesPath = string.Empty;
+            }
+        }
+        else
+        {
+            rec.spriteTextureGuid = string.Empty;
+            rec.spriteResourcesPath = string.Empty;
+        }
+#else
+        rec.spriteTextureGuid = string.Empty;
+        rec.spriteResourcesPath = string.Empty;
+#endif
+    }
+
+    static void ApplySpriteRendererState(TransformRecord rec, SpriteRenderer sr)
+    {
+        if (rec.hasSpriteFlip)
+        {
+            sr.flipX = rec.spriteFlipX;
+            sr.flipY = rec.spriteFlipY;
+        }
+
+        if (rec.hasSpriteExtraVisual)
+        {
+            sr.color = rec.savedSpriteColor;
+            sr.sortingOrder = rec.spriteSortingOrder;
+            if (!string.IsNullOrEmpty(rec.spriteSortingLayerName))
+                sr.sortingLayerName = rec.spriteSortingLayerName;
+        }
+
+        if (rec.hasSpriteReference)
+        {
+            Sprite resolved = TryResolveSprite(rec);
+            if (resolved != null)
+                sr.sprite = resolved;
+        }
+    }
+
+    static Sprite TryResolveSprite(TransformRecord rec)
+    {
+        if (!rec.hasSpriteReference || string.IsNullOrEmpty(rec.spriteName))
+            return null;
+#if UNITY_EDITOR
+        if (!string.IsNullOrEmpty(rec.spriteTextureGuid))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(rec.spriteTextureGuid);
+            if (!string.IsNullOrEmpty(path))
+            {
+                foreach (UnityEngine.Object o in AssetDatabase.LoadAllAssetsAtPath(path))
+                {
+                    if (o is Sprite sp && sp.name == rec.spriteName)
+                        return sp;
+                }
+            }
+        }
+#endif
+        if (!string.IsNullOrEmpty(rec.spriteResourcesPath))
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(rec.spriteResourcesPath);
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                if (sprites[i] != null && sprites[i].name == rec.spriteName)
+                    return sprites[i];
+            }
+        }
+
+        return null;
+    }
+
+    static string TryGetResourcesRelativePath(string assetPath)
+    {
+        if (string.IsNullOrEmpty(assetPath))
+            return null;
+        const string key = "/Resources/";
+        int idx = assetPath.IndexOf(key, StringComparison.OrdinalIgnoreCase);
+        if (idx < 0)
+            return null;
+        string rel = assetPath.Substring(idx + key.Length);
+        rel = Path.ChangeExtension(rel, null);
+        return rel.Replace('\\', '/');
     }
 
     bool ShouldSkip(Transform t)
@@ -597,16 +712,18 @@ public class SaveManager : MonoBehaviour
             if (newId == null)
                 newId = instance.AddComponent<ScenePersistedIdentity>();
             newId.SetRestoredPersistedId(rec.persistentId);
+            if (instance.TryGetComponent<SpriteRenderer>(out SpriteRenderer spawnedSr))
+                ApplySpriteRendererState(rec, spawnedSr);
         }
     }
 
-    static WatcherSummonedEnemyRecord[] BuildWatcherSummonedSnapshot(Scene scene)
+    static SaveSummonedEnemyRecord[] BuildSaveSummonedEnemiesSnapshot(Scene scene)
     {
         if (!scene.IsValid())
-            return Array.Empty<WatcherSummonedEnemyRecord>();
+            return Array.Empty<SaveSummonedEnemyRecord>();
 
-        var list = new List<WatcherSummonedEnemyRecord>();
-        foreach (WatcherSummonSaveLink link in UnityEngine.Object.FindObjectsByType<WatcherSummonSaveLink>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        var list = new List<SaveSummonedEnemyRecord>();
+        foreach (SaveSummonedEnemies link in UnityEngine.Object.FindObjectsByType<SaveSummonedEnemies>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             if (link == null || link.gameObject.scene != scene)
                 continue;
@@ -629,11 +746,7 @@ public class SaveManager : MonoBehaviour
             };
 
             if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer sr))
-            {
-                rec.hasSpriteFlip = true;
-                rec.spriteFlipX = sr.flipX;
-                rec.spriteFlipY = sr.flipY;
-            }
+                CaptureSpriteRendererState(sr, rec);
 
             if (t.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb) && rb.bodyType != RigidbodyType2D.Static)
             {
@@ -644,7 +757,7 @@ public class SaveManager : MonoBehaviour
 
             EnemyPatrol ep = t.GetComponent<EnemyPatrol>();
             EnemyAISaveData brainData = SceneEnemySave.CaptureEnemyAI(ai);
-            list.Add(new WatcherSummonedEnemyRecord
+            list.Add(new SaveSummonedEnemyRecord
             {
                 transform = rec,
                 hasPatrol = ep != null,
@@ -658,13 +771,13 @@ public class SaveManager : MonoBehaviour
     }
 
     /// <returns>Persistent ids for enemies instantiated here — skip duplicate patrol/brain apply in the global loops.</returns>
-    HashSet<string> RestoreWatcherSummonedEnemies(Scene scene, WatcherSummonedEnemyRecord[] records)
+    HashSet<string> RestoreSaveSummonedEnemies(Scene scene, SaveSummonedEnemyRecord[] records)
     {
         var createdIds = new HashSet<string>();
         if (records == null || records.Length == 0)
             return createdIds;
 
-        foreach (WatcherSummonedEnemyRecord w in records)
+        foreach (SaveSummonedEnemyRecord w in records)
         {
             TransformRecord rec = w.transform;
             if (rec == null || string.IsNullOrEmpty(rec.persistentId))
@@ -676,7 +789,7 @@ public class SaveManager : MonoBehaviour
             if (prefab == null)
             {
                 if (logSaveLoad)
-                    Debug.LogWarning($"[SaveManager] watcherSummoned id={rec.persistentId}: could not resolve prefab (guid={rec.respawnPrefabGuid}, resources={rec.resourcesSpawnPath})", this);
+                    Debug.LogWarning($"[SaveManager] saveSummonedEnemies id={rec.persistentId}: could not resolve prefab (guid={rec.respawnPrefabGuid}, resources={rec.resourcesSpawnPath})", this);
                 continue;
             }
 
@@ -693,11 +806,8 @@ public class SaveManager : MonoBehaviour
                 newId = instance.AddComponent<ScenePersistedIdentity>();
             newId.SetRestoredPersistedId(rec.persistentId);
 
-            if (rec.hasSpriteFlip && instance.TryGetComponent<SpriteRenderer>(out SpriteRenderer sr))
-            {
-                sr.flipX = rec.spriteFlipX;
-                sr.flipY = rec.spriteFlipY;
-            }
+            if (instance.TryGetComponent<SpriteRenderer>(out SpriteRenderer sr))
+                ApplySpriteRendererState(rec, sr);
 
             if (instance.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb) && rb.bodyType != RigidbodyType2D.Static)
             {
@@ -724,7 +834,7 @@ public class SaveManager : MonoBehaviour
                 }
             }
 
-            WatcherSummonSaveLink.Tag(instance, prefab);
+            SaveSummonedEnemies.Tag(instance, prefab);
             createdIds.Add(rec.persistentId);
         }
 
@@ -984,12 +1094,12 @@ public class SceneLayoutSnapshot
     public EnemyPatrolSaveRecord[] enemyPatrols;
     public EnemyAISaveRecord[] enemyBrains;
     /// <summary>Explicit snapshot of every enemy spawned by a watcher (sprinters / bulwarks), with prefab GUID + AI/patrol.</summary>
-    public WatcherSummonedEnemyRecord[] watcherSummoned;
+    public SaveSummonedEnemyRecord[] saveSummonedEnemies;
 }
 
-/// <summary>One watcher-spawned enemy, written only for objects with <see cref="WatcherSummonSaveLink"/>.</summary>
+/// <summary>One watcher-spawned enemy, written only for objects with <see cref="SaveSummonedEnemies"/>.</summary>
 [Serializable]
-public class WatcherSummonedEnemyRecord
+public class SaveSummonedEnemyRecord
 {
     public TransformRecord transform;
     public bool hasPatrol;
@@ -1014,6 +1124,15 @@ public class TransformRecord
     public bool hasSpriteFlip;
     public bool spriteFlipX;
     public bool spriteFlipY;
+    public bool hasSpriteReference;
+    public string spriteName;
+    public string spriteTextureGuid;
+    /// <summary>Path passed to <see cref="Resources.LoadAll{T}"/> (inside a Resources folder, no extension). Filled in Editor when the texture lives under Resources.</summary>
+    public string spriteResourcesPath;
+    public bool hasSpriteExtraVisual;
+    public Color savedSpriteColor;
+    public int spriteSortingOrder;
+    public string spriteSortingLayerName;
     public bool hasRigidbody2DState;
     public Vector2 rb2dLinearVelocity;
     public float rb2dAngularVelocity;

@@ -5,10 +5,10 @@ using UnityEditor;
 
 /// <summary>
 /// Marks an enemy instance spawned by a watcher (sprinter reinforcement or bulwark ring) so
-/// <see cref="SaveManager"/> writes a dedicated <c>watcherSummoned</c> block with guaranteed prefab GUID + pose + AI.
+/// <see cref="SaveManager"/> writes a dedicated <c>saveSummonedEnemies</c> block with guaranteed prefab GUID + pose + AI.
 /// </summary>
 [DisallowMultipleComponent]
-public class WatcherSummonSaveLink : MonoBehaviour
+public class SaveSummonedEnemies : MonoBehaviour
 {
     [SerializeField] string savedPrefabGuid;
     [SerializeField] string savedResourcesPath;
@@ -22,9 +22,9 @@ public class WatcherSummonSaveLink : MonoBehaviour
         if (instance == null)
             return;
 
-        WatcherSummonSaveLink link = instance.GetComponent<WatcherSummonSaveLink>();
+        SaveSummonedEnemies link = instance.GetComponent<SaveSummonedEnemies>();
         if (link == null)
-            link = instance.AddComponent<WatcherSummonSaveLink>();
+            link = instance.AddComponent<SaveSummonedEnemies>();
 
         ScenePersistedIdentity id = instance.GetComponent<ScenePersistedIdentity>();
         if (id == null)

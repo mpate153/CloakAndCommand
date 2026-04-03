@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3878294584492832085}
   - component: {fileID: 3050542334342228658}
   - component: {fileID: 1510119788437386404}
+  - component: {fileID: 2859419439242556480}
+  - component: {fileID: 172391138220785759}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -71,7 +73,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -171,6 +173,39 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &2859419439242556480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399721682388381196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d0c9f9c042aa3429908d2232a1bf59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SettingsAudioBootstrap
+  mixer: {fileID: 24100000, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
+  masterParam: MasterVol
+  musicParam: MusicVol
+  sfxParam: SfxVol
+  sfxOutputGroup: {fileID: -1231956911201580566, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
+  musicOutputGroup: {fileID: -3345614666380507768, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
+--- !u!114 &172391138220785759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399721682388381196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8f3c2e1d0b4a8f9e7c6d5b4a302918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneNavigator
+  playSceneName: StealthConcept
+  backFallbackSceneName: MainMenu
+  settingsSceneName: SettingsMenu
 --- !u!1 &5903031073874223113
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +264,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 5
+    OrthographicSize: 4
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
