@@ -49,10 +49,14 @@ public class EnemySpawnManager : MonoBehaviour
                 continue;
             }
 
+
             int randInt = Random.Range(0, spawnPts.Length);
             Transform spawnPt = spawnPts[randInt]; //Array size refers to total number of points present in the scene
 
-            Instantiate(Enemy, spawnPt.position + offset, spawnPt.rotation); //offset is used to reduce complexity of EnemyPathing implementation
+            GameObject enemyInstance = Instantiate(Enemy, spawnPt.position + offset, spawnPt.rotation); //offset is used to reduce complexity of EnemyPathing implementation
+            enemyInstance.GetComponent<TDEnemyProperties>().SetPath(randInt);
+            //Correlate spawn points to the start of the intended path
+
             TDEnemyCount.Instance.IncrementCount();
             TDEnemyCount.Instance.IncrementSpawnCount();
             spawnCount++;

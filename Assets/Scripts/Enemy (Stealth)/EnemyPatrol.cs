@@ -73,13 +73,13 @@ public class EnemyPatrol : MonoBehaviour
 
     private void ResetWaypointToPatrolStart()
     {
-        if (patrolPath == null || patrolPath.transformPoints == null || patrolPath.transformPoints.Count == 0)
+        if (patrolPath == null || patrolPath.GetTransformList() == null || patrolPath.GetTransformList().Count == 0)
         {
             currWaypointIndex = 0;
             return;
         }
 
-        currWaypointIndex = patrolPath.transformPoints.Count - 1;
+        currWaypointIndex = patrolPath.GetTransformList().Count - 1;
     }
 
     private IEnumerator DisplayPathDist()
@@ -104,13 +104,13 @@ public class EnemyPatrol : MonoBehaviour
 
     private void Move()
     {
-        if (patrolPath == null || patrolPath.transformPoints == null || patrolPath.transformPoints.Count == 0)
+        if (patrolPath == null || patrolPath.GetTransformList() == null || patrolPath.GetTransformList().Count == 0)
             return;
 
-        if (currWaypointIndex < 0 || currWaypointIndex >= patrolPath.transformPoints.Count)
+        if (currWaypointIndex < 0 || currWaypointIndex >= patrolPath.GetTransformList().Count)
             return;
 
-        Transform wp = patrolPath.transformPoints[currWaypointIndex];
+        Transform wp = patrolPath.GetTransformList()[currWaypointIndex];
         if (wp == null)
             return;
 
@@ -141,16 +141,16 @@ public class EnemyPatrol : MonoBehaviour
         finalDist = 0;
         inspectIndex = currWaypointIndex;
 
-        if (patrolPath == null || patrolPath.transformPoints == null || inspectIndex < 0)
+        if (patrolPath == null || patrolPath.GetTransformList() == null || inspectIndex < 0)
             return 0f;
 
         if (inspectIndex > 0)
         {
-            finalDist += Vector3.Distance(transform.position, patrolPath.transformPoints[inspectIndex].position);
+            finalDist += Vector3.Distance(transform.position, patrolPath.GetTransformList()[inspectIndex].position);
             for (int i = inspectIndex; i > 0; i--)
             {
-                Vector3 a = patrolPath.transformPoints[i].position;
-                Vector3 b = patrolPath.transformPoints[i - 1].position;
+                Vector3 a = patrolPath.GetTransformList()[i].position;
+                Vector3 b = patrolPath.GetTransformList()[i - 1].position;
                 finalDist += Vector3.Distance(a, b);
             }
         }
@@ -207,10 +207,10 @@ public class EnemyPatrol : MonoBehaviour
                 path = go.GetComponent<EnemyPathing>();
         }
 
-        if (path == null || path.transformPoints == null || path.transformPoints.Count == 0)
+        if (path == null || path.GetTransformList() == null || path.GetTransformList().Count == 0)
             return;
 
-        IReadOnlyList<Transform> pts = path.transformPoints;
+        IReadOnlyList<Transform> pts = path.GetTransformList();
 
         Gizmos.color = gizmoStoredPathColor;
         for (int i = 0; i < pts.Count - 1; i++)

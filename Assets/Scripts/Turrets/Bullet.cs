@@ -16,6 +16,10 @@ public class Bullet : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, bulletTarget.transform.position, speed * Time.deltaTime);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void SetTarget(GameObject target)
