@@ -96,6 +96,8 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\Enemy (Tower Defense)\TDEnemyPathing.cs" />
+    <Compile Include="Assets\Scripts\Turrets\FreezeRotation.cs" />
+    <Compile Include="Assets\Scripts\Turrets\PierceBullet.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Menus\Pause\PauseMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />

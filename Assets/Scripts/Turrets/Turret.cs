@@ -1,6 +1,7 @@
-using UnityEngine;
-using UnityEditor;
+using System;
 using System.Threading;
+using UnityEditor;
+using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class Turret : MonoBehaviour
     [SerializeField] protected GameObject bulletPrefab;
 
     [Header("Attributes")]
-    [SerializeField] protected bool spawnBullet = true;
     [SerializeField] protected float range;
     [SerializeField] protected float damage;
     [SerializeField] protected float attackInterval;
@@ -20,6 +20,7 @@ public class Turret : MonoBehaviour
     [SerializeField] protected float rotationSpeed = 120f;
     [SerializeField] protected bool useDOT = false;
     [SerializeField] protected float DOTInterval;
+    [SerializeField] protected bool pierceBullet = false;
 
     protected GameObject target;
     protected float attackTimer;
@@ -54,7 +55,7 @@ public class Turret : MonoBehaviour
                 {
                     attack();
                     attackTimer = 0;
-                    currentCharges--;
+                    loseCharge();
                 }
             }
         }
@@ -68,7 +69,7 @@ public class Turret : MonoBehaviour
 
             if (chargeProgress >= chargeTime)
             {
-                currentCharges++;
+                gainCharge();
                 chargeProgress = 0;
             }
         }
@@ -77,7 +78,7 @@ public class Turret : MonoBehaviour
 
     protected virtual void attack()
     {
-        if (spawnBullet)
+        if (!pierceBullet)
         {
             if(!useDOT)
             {
@@ -97,9 +98,23 @@ public class Turret : MonoBehaviour
         }
         else
         {
-            TDEnemyProperties targetScript = target.GetComponent<TDEnemyProperties>();
-            targetScript.TakeDamage(damage);
+            GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            Bullet bulletScript = bulletInstance.GetComponent<PierceBullet>();
+            bulletScript.SetTarget(target);
+            bulletScript.SetDamage(damage);
         }
+    }
+
+    protected virtual void gainCharge()
+    {
+        currentCharges++;
+        transform.GetChild(0).GetChild(currentCharges-1).gameObject.SetActive(true);
+    }
+
+    protected virtual void loseCharge()
+    {
+        transform.GetChild(0).GetChild(currentCharges - 1).gameObject.SetActive(false);
+        currentCharges--;
     }
 
     protected virtual void findTarget()
