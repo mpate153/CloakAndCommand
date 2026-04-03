@@ -133,11 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7763587112786788088, guid: 907aa76e341de534fb264211f4008d78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.02
+      value: -0.364
       objectReference: {fileID: 0}
     - target: {fileID: 7763587112786788088, guid: 907aa76e341de534fb264211f4008d78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.04
+      value: -0.162
       objectReference: {fileID: 0}
     - target: {fileID: 7763587112786788088, guid: 907aa76e341de534fb264211f4008d78, type: 3}
       propertyPath: m_LocalPosition.z
@@ -310,6 +310,14 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5493231995810500690, guid: 17ce79a842126e44198dad739da81e08, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5493231995810500690, guid: 17ce79a842126e44198dad739da81e08, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6685502845871395603, guid: 17ce79a842126e44198dad739da81e08, type: 3}
       propertyPath: Lens.OrthographicSize
       value: 4
@@ -320,11 +328,11 @@ PrefabInstance:
       objectReference: {fileID: 705014380}
     - target: {fileID: 7424127129511459796, guid: 17ce79a842126e44198dad739da81e08, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.020000476
+      value: -0.36399952
       objectReference: {fileID: 0}
     - target: {fileID: 7424127129511459796, guid: 17ce79a842126e44198dad739da81e08, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.040000238
+      value: -0.16200024
       objectReference: {fileID: 0}
     - target: {fileID: 7424127129511459796, guid: 17ce79a842126e44198dad739da81e08, type: 3}
       propertyPath: m_LocalPosition.z
@@ -831,6 +839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 881100002}
   - component: {fileID: 881100003}
+  - component: {fileID: 881100004}
   m_Layer: 0
   m_Name: SaveManager
   m_TagString: Untagged
@@ -876,6 +885,18 @@ MonoBehaviour:
   saveWhenPaused: 1
   autoSaveIntervalSeconds: 15
   logSaveLoad: 0
+--- !u!114 &881100004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881100001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a2b3c4d5e6f708192a3b4c5d6e7f81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTracker
 --- !u!1001 &939667180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1566,6 +1587,18 @@ PrefabInstance:
       propertyPath: minimapCamera
       value: 
       objectReference: {fileID: 1880000003}
+    - target: {fileID: 1297948693743642420, guid: d2eb020d1c1563e44a5250ef24fa50b2, type: 3}
+      propertyPath: watcherMinimap.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297948693743642420, guid: d2eb020d1c1563e44a5250ef24fa50b2, type: 3}
+      propertyPath: watcherMinimap.color.g
+      value: 0.47484267
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297948693743642420, guid: d2eb020d1c1563e44a5250ef24fa50b2, type: 3}
+      propertyPath: watcherMinimap.color.r
+      value: 0.9864358
+      objectReference: {fileID: 0}
     - target: {fileID: 3735304380333836122, guid: d2eb020d1c1563e44a5250ef24fa50b2, type: 3}
       propertyPath: m_Pivot.x
       value: 1

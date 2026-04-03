@@ -49,6 +49,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5807021076996757932, guid: 9a782fad22586f84b960d0ac1834eade, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5807021076996757932, guid: 9a782fad22586f84b960d0ac1834eade, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
@@ -63,6 +67,14 @@ PrefabInstance:
     - target: {fileID: 7347064281203132606, guid: 9a782fad22586f84b960d0ac1834eade, type: 3}
       propertyPath: chaseSpeed
       value: 3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003711951970263043, guid: 9a782fad22586f84b960d0ac1834eade, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003711951970263043, guid: 9a782fad22586f84b960d0ac1834eade, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 8003711951970263043, guid: 9a782fad22586f84b960d0ac1834eade, type: 3}
       propertyPath: m_LocalPosition.x

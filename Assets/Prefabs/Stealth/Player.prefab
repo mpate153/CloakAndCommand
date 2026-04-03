@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8487494783419192532}
   - component: {fileID: 346362002089062539}
   - component: {fileID: 4728391001}
+  - component: {fileID: 9197373476494348762}
   - component: {fileID: 4683109848344954148}
   m_Layer: 7
   m_Name: Player
@@ -33,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.02, y: -0.04, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2212930150798374532}
@@ -245,6 +246,27 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 05ce7a88032ebf9469a797d60e7ae2bd, type: 3}
   throwSfxVolume: 1
   throwSfxOutput: {fileID: -1231956911201580566, guid: df74c75f96eadbf41adf237827007ef5, type: 2}
+--- !u!114 &9197373476494348762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429311956669006329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce0c9c002ba9184f863f7846014f39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  useFire1: 1
+  alternateButton: Fire1
+  hitRadius: 0.55
+  hitDistance: 0.35
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 128
+  lethalDamage: 9999
+  useTransformUpAsForward: 1
 --- !u!95 &4683109848344954148
 Animator:
   serializedVersion: 7

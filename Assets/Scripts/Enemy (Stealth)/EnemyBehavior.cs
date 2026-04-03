@@ -25,10 +25,16 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float searchDuration = 5f;
 
     [Header("Chase & Attack")]
+    [Tooltip("Enemy attempts a melee swing when the player is within this distance (animation always plays).")]
     [SerializeField] private float attackRange = 0.65f;
     [SerializeField] private float attackDamage = 1f;
     public float AttackDamage => attackDamage;
     [SerializeField] private float attackInterval = 1f;
+    [Tooltip("2D overlap radius at the hit point (must overlap player colliders to kill).")]
+    [SerializeField] private float attackHitRadius = 0.55f;
+    [Tooltip("Hit circle center: this far from the enemy toward the player.")]
+    [SerializeField] private float attackHitDistance = 0.35f;
+    [SerializeField] private LayerMask attackHitMask = ~0;
     [Tooltip("Watcher/Bulwark chase: lose sight this long before Search.")]
     [SerializeField] private float chaseLoseSightDuration = 10f;
 
@@ -58,6 +64,7 @@ public class EnemyAI : MonoBehaviour
     private EnemyVision _vision;
     private EnemyMovement _movement;
     private EnemyArchetype _archetype;
+    private EnemyAnimatorDriver _animDriver;
 
     private State _state = State.Idle;
     private float _suspiciousTimer;
@@ -84,7 +91,14 @@ public class EnemyAI : MonoBehaviour
     private float _sprOffscreenMargin;
     private float _sprinterChaseBlindTimer;
 
+    static readonly Collider2D[] MeleeHitBuffer = new Collider2D[24];
+
     public State CurrentState => _state;
+
+    /// <summary>
+    /// Same detection rules as patrol/chase (cone + LOS, or Bulwark omni LOS). Used for stealth melee gating.
+    /// </summary>
+    public bool IsPlayerCurrentlyDetected() => PlayerIsDetected();
 
     /// <summary>Called by <see cref="SaveManager"/> after it restores private fields via reflection.</summary>
     public void RestoreVisualsAfterSave(bool patrolBehaviourEnabled)
@@ -196,6 +210,7 @@ public class EnemyAI : MonoBehaviour
         _vision = GetComponent<EnemyVision>();
         _movement = GetComponent<EnemyMovement>();
         TryGetComponent(out _archetype);
+        TryGetComponent(out _animDriver);
         EnsureAudioSource();
     }
 
@@ -405,7 +420,11 @@ public class EnemyAI : MonoBehaviour
             _attackCooldown -= Time.deltaTime;
         float dist = Vector2.Distance(transform.position, _vision.PlayerTransform.position);
         if (dist <= attackRange && _attackCooldown <= 0f)
+        {
             _attackCooldown = attackInterval;
+            _animDriver?.PlayAttackAnimation();
+            TryMeleeHitPlayer(dist);
+        }
     }
 
     private void EnterSprinterSweep()
@@ -493,7 +512,11 @@ public class EnemyAI : MonoBehaviour
 
         float dist = Vector2.Distance(transform.position, _vision.PlayerTransform.position);
         if (dist <= attackRange && _attackCooldown <= 0f)
+        {
             _attackCooldown = attackInterval;
+            _animDriver?.PlayAttackAnimation();
+            TryMeleeHitPlayer(dist);
+        }
     }
 
     private void EnterIdle()
@@ -647,6 +670,41 @@ public class EnemyAI : MonoBehaviour
         if (_archetype != null && _archetype.Kind == EnemyKind.Bulwark)
             return OmnidirectionalLosAware();
         return _vision.CanSeePlayer;
+    }
+
+    /// <summary>
+    /// Kill + game over only if the melee overlap hits the player's colliders; swing animation is already playing.
+    /// </summary>
+    void TryMeleeHitPlayer(float distToPlayer)
+    {
+        if (distToPlayer > attackRange || _vision.PlayerTransform == null)
+            return;
+
+        Vector2 enemyPos = transform.position;
+        Vector2 playerPos = _vision.PlayerTransform.position;
+        Vector2 dir = playerPos - enemyPos;
+        if (dir.sqrMagnitude < 1e-8f)
+            dir = Vector2.up;
+        else
+            dir.Normalize();
+
+        Vector2 origin = enemyPos + dir * attackHitDistance;
+        int n = Physics2D.OverlapCircleNonAlloc(origin, attackHitRadius, MeleeHitBuffer, attackHitMask);
+
+        for (int i = 0; i < n; i++)
+        {
+            var col = MeleeHitBuffer[i];
+            if (col == null)
+                continue;
+            var health = col.GetComponentInParent<PlayerHealth>();
+            if (health == null)
+                continue;
+            if (health.transform != _vision.PlayerTransform &&
+                !_vision.PlayerTransform.IsChildOf(health.transform))
+                continue;
+            health.DieFromEnemy();
+            return;
+        }
     }
 
     private bool OmnidirectionalLosAware()

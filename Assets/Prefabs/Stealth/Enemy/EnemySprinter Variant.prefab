@@ -9,16 +9,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 942538718036381105, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 942538718036381105, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 942538718036381105, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
       propertyPath: m_Color.g
-      value: 0.8578205
+      value: 0.5568628
       objectReference: {fileID: 0}
     - target: {fileID: 942538718036381105, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.24313726
       objectReference: {fileID: 0}
     - target: {fileID: 3643652350821348382, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
       propertyPath: m_LocalPosition.x
@@ -63,6 +67,10 @@ PrefabInstance:
     - target: {fileID: 4067941333343902883, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
       propertyPath: chaseSpeed
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892746510238475621, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
+      propertyPath: m_Controller
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7817607800827764109, guid: 3a1e4d5a37a12464cb6f9d8f50f51235, type: 3}
       propertyPath: kind
