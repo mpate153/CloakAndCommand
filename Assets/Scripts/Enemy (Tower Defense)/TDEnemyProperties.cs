@@ -52,6 +52,8 @@ public class TDEnemyProperties: MonoBehaviour
     [SerializeField] private bool togglePathDist = false;
     [SerializeField] private bool toggleHealth = false;
     [SerializeField] private float functionDelaySeconds = 2f;
+
+    [SerializeField] public GameObject targetObjectiveObject;
     private int currWaypointIndex = 0;
     private EnemyPathing targetScript;
     private float finalDist;
@@ -147,6 +149,8 @@ public class TDEnemyProperties: MonoBehaviour
         targetPathObject = TDPathManager.instance.GetPathObject(element);
         targetScript = targetPathObject.GetComponent<EnemyPathing>();
         currWaypointIndex = targetScript.GetTransformList().Count - 1;
+
+        targetObjectiveObject = TDObjectiveManager.instance.GetCounter(element);
         this.enabled = true;
     }
 
@@ -200,8 +204,8 @@ public class TDEnemyProperties: MonoBehaviour
                 Debug.Log("EndReached");
                 TDEnemyCount.Instance.DecrementCount();
                 TDEnemyCount.Instance.CheckVictory();
-                TDObjectiveHealth.Instance.DecrementHealth(damage);
-                TDObjectiveHealth.Instance.CheckHealth();
+                targetObjectiveObject.GetComponent<TDObjectiveHealth>().DecrementHealth(damage);
+                targetObjectiveObject.GetComponent<TDObjectiveHealth>().CheckHealth();
                 Destroy(gameObject);
             }
         }

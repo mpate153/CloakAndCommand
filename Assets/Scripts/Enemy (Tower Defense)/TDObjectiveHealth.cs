@@ -1,24 +1,18 @@
+using TMPro;
 using UnityEngine;
 
 public class TDObjectiveHealth : MonoBehaviour
 {
-    public static TDObjectiveHealth Instance { get; set; }
+    
     [SerializeField] private float health = 5f;
-    private void Awake()
+    [SerializeField] private TextMeshProUGUI ctrText;
+
+    void Start()
     {
-        //Simpleton stuff
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-
-        //DontDestroyOnLoad(gameObject); //Allows for objects to persist between scenes
+        UpdateDisplay();
     }
 
-    public void DecrementHealth(float dmg) {  health -= dmg; }
+    public void DecrementHealth(float dmg) {  health -= dmg; UpdateDisplay();  }
     public float GetHealth() { return health; }
     public void CheckHealth()
     {
@@ -28,5 +22,10 @@ public class TDObjectiveHealth : MonoBehaviour
             Debug.Log("Game Over");
             Debug.Break();
         }
+    }
+
+    public void UpdateDisplay()
+    {
+        ctrText.text = "Health: " + Mathf.Ceil(health).ToString();
     }
 }
