@@ -42,9 +42,19 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float separationWeight = 1.35f;
     [SerializeField] private LayerMask separationMask = ~0;
 
+    /// <summary>
+    /// While chasing, we do not shove the enemy away from the player after <see cref="MovePosition"/> — that was preventing melee range.
+    /// Set by <see cref="EnemyAI"/> from <see cref="FixedUpdate"/>.
+    /// </summary>
+    public bool SuppressDepenetrationFromPlayerDuringChase { get; set; }
+
     // ── Private ──────────────────────────────────────────────────────────────
     private Rigidbody2D _body;
     private Collider2D _selfCollider;
+    private Collider2D[] _enemyColliders;
+    private bool _playerCollisionIgnoreActive;
+    private Transform _ignoredPlayerBodyRoot;
+    private Collider2D[] _ignoredPlayerColliders;
     private readonly Collider2D[] _separationHits = new Collider2D[24];
 
     private Vector2 _sprinterStaleChaseTarget;
@@ -69,6 +79,75 @@ public class EnemyMovement : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         _body.bodyType = RigidbodyType2D.Kinematic;
         _selfCollider = GetComponent<Collider2D>();
+        _enemyColliders = GetComponentsInChildren<Collider2D>(true);
+    }
+
+    private void OnDisable() => ClearPlayerCollisionIgnore();
+
+    /// <summary>
+    /// Kinematic <see cref="MovePosition"/> still resolves against a dynamic player <see cref="Rigidbody2D"/> and shoves them.
+    /// While chasing, ignore enemy vs player collider pairs so melee range is stable. Overlap queries still see the player.
+    /// </summary>
+    public void SetIgnorePlayerCollisionsWhileChasing(bool chasing, Transform playerVisionTransform)
+    {
+        if (!chasing)
+        {
+            ClearPlayerCollisionIgnore();
+            return;
+        }
+
+        if (playerVisionTransform == null)
+        {
+            ClearPlayerCollisionIgnore();
+            return;
+        }
+
+        PlayerMovement pm = playerVisionTransform.GetComponentInParent<PlayerMovement>(true);
+        if (pm == null)
+        {
+            ClearPlayerCollisionIgnore();
+            return;
+        }
+
+        Transform bodyRoot = pm.transform;
+        if (_playerCollisionIgnoreActive && _ignoredPlayerBodyRoot == bodyRoot)
+            return;
+
+        if (_playerCollisionIgnoreActive)
+            ClearPlayerCollisionIgnore();
+
+        _ignoredPlayerBodyRoot = bodyRoot;
+        _ignoredPlayerColliders = bodyRoot.GetComponentsInChildren<Collider2D>(true);
+        ApplyPlayerCollisionIgnore(true);
+    }
+
+    void ApplyPlayerCollisionIgnore(bool ignore)
+    {
+        if (_enemyColliders == null || _ignoredPlayerColliders == null)
+            return;
+
+        for (int e = 0; e < _enemyColliders.Length; e++)
+        {
+            Collider2D ec = _enemyColliders[e];
+            if (ec == null) continue;
+            for (int p = 0; p < _ignoredPlayerColliders.Length; p++)
+            {
+                Collider2D pc = _ignoredPlayerColliders[p];
+                if (pc == null) continue;
+                Physics2D.IgnoreCollision(ec, pc, ignore);
+            }
+        }
+
+        _playerCollisionIgnoreActive = ignore;
+    }
+
+    void ClearPlayerCollisionIgnore()
+    {
+        if (!_playerCollisionIgnoreActive)
+            return;
+        ApplyPlayerCollisionIgnore(false);
+        _ignoredPlayerBodyRoot = null;
+        _ignoredPlayerColliders = null;
     }
 
     // ────────────────────────────────────────────────────────────────────────
@@ -93,7 +172,8 @@ public class EnemyMovement : MonoBehaviour
         float step = Mathf.Min(chaseSpeed * Time.fixedDeltaTime, dist - chaseStopDistance);
         if (step <= 0f) return;
         _body.MovePosition(_body.position + dir * step);
-        TryDepenetrateFromPlayerIfOverlapping();
+        if (!SuppressDepenetrationFromPlayerDuringChase)
+            TryDepenetrateFromPlayerIfOverlapping();
     }
 
     /// <summary>Planar move + turn (deploy / leave paths).</summary>
@@ -286,6 +366,8 @@ public class EnemyMovement : MonoBehaviour
             var col = _separationHits[i];
             if (col == null) continue;
             if (_selfCollider != null && col == _selfCollider) continue;
+            if (IsPlayerCollider(col))
+                continue;
 
             var rb = col.attachedRigidbody;
             if ((rb == null || rb == _body) && !IsPlayerCollider(col)) continue;

@@ -205,7 +205,10 @@ public class EnemyVision : MonoBehaviour
             _meshRenderer.enabled = enabled;
     }
 
-    /// <summary>Watcher idle: gentle yaw so the cone scans side to side.</summary>
+    /// <summary>
+    /// Bakes a sinusoidal yaw into the cone mesh only (not <see cref="Transform"/> / rigidbody).
+    /// Fine for a stationary guard; with a moving sprite it looks detached unless the body rotates the same way.
+    /// </summary>
     public void SetIdleConeSway(bool active, float amplitudeDegrees = 6f, float speed = 1.1f)
     {
         _idleConeSwayActive = active;

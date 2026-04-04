@@ -210,7 +210,8 @@ public class EnemyAI : MonoBehaviour
         _vision = GetComponent<EnemyVision>();
         _movement = GetComponent<EnemyMovement>();
         TryGetComponent(out _archetype);
-        TryGetComponent(out _animDriver);
+        if (!TryGetComponent(out _animDriver))
+            _animDriver = GetComponentInChildren<EnemyAnimatorDriver>(true);
         EnsureAudioSource();
     }
 
@@ -304,6 +305,12 @@ public class EnemyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        bool chasingPlayer = IsSprinterFlow()
+            ? _state == State.SprinterChase
+            : _state == State.Chase;
+        _movement.SuppressDepenetrationFromPlayerDuringChase = chasingPlayer;
+        _movement.SetIgnorePlayerCollisionsWhileChasing(chasingPlayer, _vision.PlayerTransform);
+
         if (IsSprinterFlow())
         {
             FixedSprinterFlow();
@@ -333,7 +340,8 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateSprinterFlowVisionSway()
     {
-        if (_state == State.SprinterSweep && _archetype != null)
+        // Mesh-only cone sway (EnemyVision) does not rotate the rigidbody/sprite — leave off so the cone matches facing.
+        if (_state == State.SprinterSweep && _archetype != null && _archetype.SprinterSweepMeshConeSway)
         {
             _vision.SetIdleConeSway(true,
                 _archetype.SprinterSweepConeSwayDegrees,
@@ -418,7 +426,7 @@ public class EnemyAI : MonoBehaviour
 
         if (_attackCooldown > 0f)
             _attackCooldown -= Time.deltaTime;
-        float dist = Vector2.Distance(transform.position, _vision.PlayerTransform.position);
+        float dist = GetDistanceToPlayerForMelee();
         if (dist <= attackRange && _attackCooldown <= 0f)
         {
             _attackCooldown = attackInterval;
@@ -510,7 +518,7 @@ public class EnemyAI : MonoBehaviour
         if (_attackCooldown > 0f)
             _attackCooldown -= Time.deltaTime;
 
-        float dist = Vector2.Distance(transform.position, _vision.PlayerTransform.position);
+        float dist = GetDistanceToPlayerForMelee();
         if (dist <= attackRange && _attackCooldown <= 0f)
         {
             _attackCooldown = attackInterval;
@@ -672,14 +680,61 @@ public class EnemyAI : MonoBehaviour
         return _vision.CanSeePlayer;
     }
 
+    bool IsInChaseOrSprinterChase() =>
+        _state == State.Chase || _state == State.SprinterChase;
+
     /// <summary>
-    /// Kill + game over only if the melee overlap hits the player's colliders; swing animation is already playing.
+    /// Shortest distance from this enemy to the player’s colliders (or vision target if none), so range checks match overlap even when the Player tag sits on an offset empty.
+    /// </summary>
+    float GetDistanceToPlayerForMelee()
+    {
+        if (_vision.PlayerTransform == null)
+            return float.MaxValue;
+        Vector2 ep = transform.position;
+        PlayerHealth health = PlayerHealth.FindForGameplayTransform(_vision.PlayerTransform);
+        Transform root = health != null ? health.transform : _vision.PlayerTransform.root;
+        var cols = root.GetComponentsInChildren<Collider2D>(true);
+        float best = Vector2.Distance(ep, (Vector2)_vision.PlayerTransform.position);
+        for (int i = 0; i < cols.Length; i++)
+        {
+            Collider2D c = cols[i];
+            if (c == null || !c.enabled || c.isTrigger)
+                continue;
+            best = Mathf.Min(best, Vector2.Distance(ep, c.ClosestPoint(ep)));
+        }
+        return best;
+    }
+
+    static PlayerHealth ResolvePlayerHealthForKill(Transform visionPlayer)
+    {
+        if (visionPlayer == null)
+            return null;
+        PlayerHealth h = PlayerHealth.FindForGameplayTransform(visionPlayer);
+        if (h != null)
+            return h;
+        return Object.FindFirstObjectByType<PlayerHealth>();
+    }
+
+    /// <summary>
+    /// Tries physics hits first; if none land, chase/sprinter-chase still kills in <see cref="attackRange"/> so game over always works.
     /// </summary>
     void TryMeleeHitPlayer(float distToPlayer)
     {
         if (distToPlayer > attackRange || _vision.PlayerTransform == null)
             return;
 
+        if (TryMeleeHitPlayerViaPhysics())
+            return;
+
+        if (IsInChaseOrSprinterChase())
+        {
+            PlayerHealth h = ResolvePlayerHealthForKill(_vision.PlayerTransform);
+            h?.DieFromEnemy();
+        }
+    }
+
+    bool TryMeleeHitPlayerViaPhysics()
+    {
         Vector2 enemyPos = transform.position;
         Vector2 playerPos = _vision.PlayerTransform.position;
         Vector2 dir = playerPos - enemyPos;
@@ -689,22 +744,77 @@ public class EnemyAI : MonoBehaviour
             dir.Normalize();
 
         Vector2 origin = enemyPos + dir * attackHitDistance;
-        int n = Physics2D.OverlapCircleNonAlloc(origin, attackHitRadius, MeleeHitBuffer, attackHitMask);
 
+        var filter = new ContactFilter2D();
+        filter.useLayerMask = true;
+        filter.layerMask = attackHitMask;
+        filter.useTriggers = true;
+
+        int n = Physics2D.OverlapCircle(origin, attackHitRadius, filter, MeleeHitBuffer);
         for (int i = 0; i < n; i++)
         {
-            var col = MeleeHitBuffer[i];
-            if (col == null)
-                continue;
-            var health = col.GetComponentInParent<PlayerHealth>();
-            if (health == null)
-                continue;
-            if (health.transform != _vision.PlayerTransform &&
-                !_vision.PlayerTransform.IsChildOf(health.transform))
-                continue;
-            health.DieFromEnemy();
-            return;
+            if (TryConsumeHitOnPlayerCollider(MeleeHitBuffer[i]))
+                return true;
         }
+
+        return TryMeleeHitPlayerByColliderDistance();
+    }
+
+    bool TryConsumeHitOnPlayerCollider(Collider2D col)
+    {
+        if (col == null || _vision.PlayerTransform == null)
+            return false;
+        PlayerHealth health = PlayerHealth.FindForGameplayTransform(col.transform);
+        if (health == null)
+            return false;
+        PlayerHealth visionHealth = PlayerHealth.FindForGameplayTransform(_vision.PlayerTransform);
+        if (visionHealth != health)
+            return false;
+        health.DieFromEnemy();
+        return true;
+    }
+
+    bool TryMeleeHitPlayerByColliderDistance()
+    {
+        if (_vision.PlayerTransform == null)
+            return false;
+
+        Vector2 ep = transform.position;
+        float maxGap = Mathf.Max(attackHitRadius, 0.12f);
+        PlayerHealth expected = ResolvePlayerHealthForKill(_vision.PlayerTransform);
+        if (expected == null)
+            return false;
+
+        Collider2D selfCol = GetComponent<Collider2D>();
+        var playerCols = expected.GetComponentsInChildren<Collider2D>(true);
+        for (int i = 0; i < playerCols.Length; i++)
+        {
+            var pc = playerCols[i];
+            if (pc == null || !pc.enabled || pc.isTrigger || pc == selfCol)
+                continue;
+            // Do not filter by attackHitMask here — wrong layer would block kills while chase overlap is ignored (Physics2D.IgnoreCollision).
+
+            if (selfCol != null && selfCol.enabled)
+            {
+                ColliderDistance2D d = Physics2D.Distance(selfCol, pc);
+                if (d.isOverlapped || d.distance <= maxGap)
+                {
+                    expected.DieFromEnemy();
+                    return true;
+                }
+            }
+            else
+            {
+                float gap = Vector2.Distance(ep, pc.ClosestPoint(ep));
+                if (gap <= maxGap)
+                {
+                    expected.DieFromEnemy();
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private bool OmnidirectionalLosAware()

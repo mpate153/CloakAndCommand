@@ -1,0 +1,1014 @@
+fileFormatVersion: 2
+guid: 51ae908c7fb14014f9bf721b35a29e5a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6643636578846853935
+    second: 72 - MquAFDQ_0
+  - first:
+      213: 6835045967268351875
+    second: 72 - MquAFDQ_1
+  - first:
+      213: 6889228808955732436
+    second: 72 - MquAFDQ_2
+  - first:
+      213: 1195179130743324388
+    second: 72 - MquAFDQ_3
+  - first:
+      213: 6737480936222406259
+    second: 72 - MquAFDQ_4
+  - first:
+      213: 8278839232807649052
+    second: 72 - MquAFDQ_5
+  - first:
+      213: -827555142174389061
+    second: 72 - MquAFDQ_6
+  - first:
+      213: -1296649452545435497
+    second: 72 - MquAFDQ_7
+  - first:
+      213: -5666251522195938487
+    second: 72 - MquAFDQ_8
+  - first:
+      213: -5674611218431552651
+    second: 72 - MquAFDQ_9
+  - first:
+      213: 9003758652621673180
+    second: 72 - MquAFDQ_10
+  - first:
+      213: 1127473093805655019
+    second: 72 - MquAFDQ_11
+  - first:
+      213: 7822872105749849240
+    second: 72 - MquAFDQ_12
+  - first:
+      213: 3052862733594325685
+    second: 72 - MquAFDQ_13
+  - first:
+      213: -752106074212688271
+    second: 72 - MquAFDQ_14
+  - first:
+      213: -7895655898357826019
+    second: 72 - MquAFDQ_15
+  - first:
+      213: -2700169406420082378
+    second: 72 - MquAFDQ_16
+  - first:
+      213: -3371632688823730686
+    second: 72 - MquAFDQ_17
+  - first:
+      213: -8697833877643593649
+    second: 72 - MquAFDQ_18
+  - first:
+      213: -5885500378599352439
+    second: 72 - MquAFDQ_19
+  - first:
+      213: 8522721406148977852
+    second: 72 - MquAFDQ_20
+  - first:
+      213: -7668787864388989074
+    second: 72 - MquAFDQ_21
+  - first:
+      213: -682010457321097042
+    second: 72 - MquAFDQ_22
+  - first:
+      213: -3507100041067896413
+    second: 72 - MquAFDQ_23
+  - first:
+      213: -6715276633547892638
+    second: 72 - MquAFDQ_24
+  - first:
+      213: 90684509353945624
+    second: 72 - MquAFDQ_25
+  - first:
+      213: 2467086460994276958
+    second: 72 - MquAFDQ_26
+  - first:
+      213: 5506062816158864686
+    second: 72 - MquAFDQ_27
+  - first:
+      213: 8870539772132276547
+    second: 72 - MquAFDQ_28
+  - first:
+      213: -7116603878599387324
+    second: 72 - MquAFDQ_29
+  - first:
+      213: 5012206649842396722
+    second: 72 - MquAFDQ_30
+  - first:
+      213: 1292283733457736641
+    second: 72 - MquAFDQ_31
+  - first:
+      213: -6384332987043920506
+    second: 72 - MquAFDQ_32
+  - first:
+      213: 2866601055156017827
+    second: 72 - MquAFDQ_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 50
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d4ba052bbf0dc3a0800000000000000
+      internalID: -6643636578846853935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_1
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38f0f76f716fade50800000000000000
+      internalID: 6835045967268351875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_2
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d1a13ed9157b9f50800000000000000
+      internalID: 6889228808955732436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_3
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ee7aea4611269010800000000000000
+      internalID: 1195179130743324388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_4
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 376b08cf637508d50800000000000000
+      internalID: 6737480936222406259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_5
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1f31184b6854e270800000000000000
+      internalID: 8278839232807649052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_6
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbcc5a69bfee384f0800000000000000
+      internalID: -827555142174389061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_7
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79813de5130610ee0800000000000000
+      internalID: -1296649452545435497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_8
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 943ae7bf24e6d51b0800000000000000
+      internalID: -5666251522195938487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_9
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 573d0f6892bbf31b0800000000000000
+      internalID: -5674611218431552651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_10
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd25dd46ac6c3fc70800000000000000
+      internalID: 9003758652621673180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_11
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be3c8122ec695af00800000000000000
+      internalID: 1127473093805655019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_12
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 894288a9bbc609c60800000000000000
+      internalID: 7822872105749849240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_13
+      rect:
+        serializedVersion: 2
+        x: 1560
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b2faef3b72fd5a20800000000000000
+      internalID: 3052862733594325685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_14
+      rect:
+        serializedVersion: 2
+        x: 1680
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17e9325a28bff85f0800000000000000
+      internalID: -752106074212688271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_15
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1ef9ad1bcefc6290800000000000000
+      internalID: -7895655898357826019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_16
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 60
+        width: 118
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63124f02b32178ad0800000000000000
+      internalID: -2700169406420082378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20ef095eeed8531d0800000000000000
+      internalID: -3371632688823730686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_18
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f48f1bfdb261b4780800000000000000
+      internalID: -8697833877643593649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_19
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9879820a690825ea0800000000000000
+      internalID: -5885500378599352439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_20
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb4a02da6f9c64670800000000000000
+      internalID: 8522721406148977852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_21
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6f844d711ef29590800000000000000
+      internalID: -7668787864388989074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_22
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea8364e3a130986f0800000000000000
+      internalID: -682010457321097042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_23
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a1e3641817445fc0800000000000000
+      internalID: -3507100041067896413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_24
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26895e81b7b8ec2a0800000000000000
+      internalID: -6715276633547892638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_25
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81a2caea41d224100800000000000000
+      internalID: 90684509353945624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_26
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5e4db9a01adc3220800000000000000
+      internalID: 2467086460994276958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_27
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e25d22c75f6796c40800000000000000
+      internalID: 5506062816158864686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_28
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3493be3bcec7a1b70800000000000000
+      internalID: 8870539772132276547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_29
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4479ae05a7ebc3d90800000000000000
+      internalID: -7116603878599387324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_30
+      rect:
+        serializedVersion: 2
+        x: 1560
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23ee4b8646fee8540800000000000000
+      internalID: 5012206649842396722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_31
+      rect:
+        serializedVersion: 2
+        x: 1680
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c393c1753d1fe110800000000000000
+      internalID: 1292283733457736641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_32
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 685407359fa4667a0800000000000000
+      internalID: -6384332987043920506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 72 - MquAFDQ_33
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 9
+        width: 118
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aa9555c87638c720800000000000000
+      internalID: 2866601055156017827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      72 - MquAFDQ_0: -6643636578846853935
+      72 - MquAFDQ_1: 6835045967268351875
+      72 - MquAFDQ_10: 9003758652621673180
+      72 - MquAFDQ_11: 1127473093805655019
+      72 - MquAFDQ_12: 7822872105749849240
+      72 - MquAFDQ_13: 3052862733594325685
+      72 - MquAFDQ_14: -752106074212688271
+      72 - MquAFDQ_15: -7895655898357826019
+      72 - MquAFDQ_16: -2700169406420082378
+      72 - MquAFDQ_17: -3371632688823730686
+      72 - MquAFDQ_18: -8697833877643593649
+      72 - MquAFDQ_19: -5885500378599352439
+      72 - MquAFDQ_2: 6889228808955732436
+      72 - MquAFDQ_20: 8522721406148977852
+      72 - MquAFDQ_21: -7668787864388989074
+      72 - MquAFDQ_22: -682010457321097042
+      72 - MquAFDQ_23: -3507100041067896413
+      72 - MquAFDQ_24: -6715276633547892638
+      72 - MquAFDQ_25: 90684509353945624
+      72 - MquAFDQ_26: 2467086460994276958
+      72 - MquAFDQ_27: 5506062816158864686
+      72 - MquAFDQ_28: 8870539772132276547
+      72 - MquAFDQ_29: -7116603878599387324
+      72 - MquAFDQ_3: 1195179130743324388
+      72 - MquAFDQ_30: 5012206649842396722
+      72 - MquAFDQ_31: 1292283733457736641
+      72 - MquAFDQ_32: -6384332987043920506
+      72 - MquAFDQ_33: 2866601055156017827
+      72 - MquAFDQ_4: 6737480936222406259
+      72 - MquAFDQ_5: 8278839232807649052
+      72 - MquAFDQ_6: -827555142174389061
+      72 - MquAFDQ_7: -1296649452545435497
+      72 - MquAFDQ_8: -5666251522195938487
+      72 - MquAFDQ_9: -5674611218431552651
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

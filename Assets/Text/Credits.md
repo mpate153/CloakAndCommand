@@ -139,13 +139,20 @@ Kego Wigwas
 #### Concept Artists
 Hari Vallath 
 Kego Wigwas
+and
+Mishaal Patel
 
 #### Animation
 Kego Wigwas
 Hari Vallath
 
 #### Additional Art
-Mona Lisa – Leonardo Da Vinci
+
+##### Tech Dungeon: Roguelite - Asset Pack
+Created by Pupkin Assets (itch.io)
+
+##### Modern Office Sprites
+Created by Musicjab (Reddit)
 <!-- Add art asset names -->
 
 

@@ -1,0 +1,624 @@
+fileFormatVersion: 2
+guid: cb7f80ed4e9ec1c44b99919d4709a24b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7727254486655676893
+    second: 70 - e5WeumG_0
+  - first:
+      213: 90141626782341082
+    second: 70 - e5WeumG_1
+  - first:
+      213: -4483301424228184115
+    second: 70 - e5WeumG_2
+  - first:
+      213: 6208377291051415391
+    second: 70 - e5WeumG_3
+  - first:
+      213: 4956965894095788069
+    second: 70 - e5WeumG_4
+  - first:
+      213: 4211347725209888255
+    second: 70 - e5WeumG_5
+  - first:
+      213: -8800646729714475912
+    second: 70 - e5WeumG_6
+  - first:
+      213: -6693124775609095360
+    second: 70 - e5WeumG_7
+  - first:
+      213: 1650598792118225610
+    second: 70 - e5WeumG_8
+  - first:
+      213: -6037764186867597267
+    second: 70 - e5WeumG_9
+  - first:
+      213: -4213877090919385045
+    second: 70 - e5WeumG_10
+  - first:
+      213: 2898814107039019907
+    second: 70 - e5WeumG_11
+  - first:
+      213: -9106267149115922287
+    second: 70 - e5WeumG_12
+  - first:
+      213: -2804082990804883640
+    second: 70 - e5WeumG_13
+  - first:
+      213: -6641676679498341561
+    second: 70 - e5WeumG_14
+  - first:
+      213: 3882720839019442046
+    second: 70 - e5WeumG_15
+  - first:
+      213: -5092244897599343106
+    second: 70 - e5WeumG_16
+  - first:
+      213: 6864013198872790812
+    second: 70 - e5WeumG_17
+  - first:
+      213: -2935434904887165115
+    second: 70 - e5WeumG_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 50
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 70 - e5WeumG_0
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 6
+        width: 66
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd1b72ec309bc3b60800000000000000
+      internalID: 7727254486655676893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_1
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad756dbf45f304100800000000000000
+      internalID: 90141626782341082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_2
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf40e3bb1d18c1c0800000000000000
+      internalID: -4483301424228184115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_3
+      rect:
+        serializedVersion: 2
+        x: 285
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f57b8b8b046982650800000000000000
+      internalID: 6208377291051415391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_4
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5285e41b73eaac440800000000000000
+      internalID: 4956965894095788069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_5
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff5e8c28176b17a30800000000000000
+      internalID: 4211347725209888255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_6
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87c5aa95d62ddd580800000000000000
+      internalID: -8800646729714475912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_7
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04b24707a7e3d13a0800000000000000
+      internalID: -6693124775609095360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_8
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aca45ee2bda18e610800000000000000
+      internalID: 1650598792118225610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_9
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d208e24267d853ca0800000000000000
+      internalID: -6037764186867597267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_10
+      rect:
+        serializedVersion: 2
+        x: 724
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b28f794ac1d4585c0800000000000000
+      internalID: -4213877090919385045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_11
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 383b3ff5218aa3820800000000000000
+      internalID: 2898814107039019907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_12
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 198e223664a00a180800000000000000
+      internalID: -9106267149115922287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_13
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8472c546065e519d0800000000000000
+      internalID: -2804082990804883640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_14
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7436185cf3604d3a0800000000000000
+      internalID: -6641676679498341561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_15
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7fa2c3180232e530800000000000000
+      internalID: 3882720839019442046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_16
+      rect:
+        serializedVersion: 2
+        x: 1123
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef5bb49de36b459b0800000000000000
+      internalID: -5092244897599343106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_17
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c17c76423afd14f50800000000000000
+      internalID: 6864013198872790812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 70 - e5WeumG_18
+      rect:
+        serializedVersion: 2
+        x: 1253
+        y: 6
+        width: 34
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54ffae0b18d3347d0800000000000000
+      internalID: -2935434904887165115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      70 - e5WeumG_0: 7727254486655676893
+      70 - e5WeumG_1: 90141626782341082
+      70 - e5WeumG_10: -4213877090919385045
+      70 - e5WeumG_11: 2898814107039019907
+      70 - e5WeumG_12: -9106267149115922287
+      70 - e5WeumG_13: -2804082990804883640
+      70 - e5WeumG_14: -6641676679498341561
+      70 - e5WeumG_15: 3882720839019442046
+      70 - e5WeumG_16: -5092244897599343106
+      70 - e5WeumG_17: 6864013198872790812
+      70 - e5WeumG_18: -2935434904887165115
+      70 - e5WeumG_2: -4483301424228184115
+      70 - e5WeumG_3: 6208377291051415391
+      70 - e5WeumG_4: 4956965894095788069
+      70 - e5WeumG_5: 4211347725209888255
+      70 - e5WeumG_6: -8800646729714475912
+      70 - e5WeumG_7: -6693124775609095360
+      70 - e5WeumG_8: 1650598792118225610
+      70 - e5WeumG_9: -6037764186867597267
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -17,6 +17,14 @@ using UnityEditor;
 /// Add to a GameObject (e.g. named SaveManager); call <see cref="SaveLayout"/> / <see cref="LoadLayout"/>
 /// from buttons or enable auto load/save flags.
 /// </summary>
+/// <remarks>
+/// <para><b>What is included:</b> a depth-first walk of the loaded scene (skips UI under Canvas, cameras, lights, EventSystem unless you turn those off).
+/// Each transform stores world pose; <see cref="SpriteRenderer"/> and dynamic <see cref="Rigidbody2D"/> velocity when present.
+/// <see cref="EnemyAI"/> / <see cref="EnemyPatrol"/> state is saved separately; enemies also get <see cref="ScenePersistedIdentity"/> auto-added.</para>
+/// <para><b>Props &amp; walls:</b> static scene objects are saved by hierarchy path (object names from root). For anything you might rename, duplicate, spawn at runtime, or that must respawn after load,
+/// add <see cref="ScenePersistedIdentity"/> and assign <c>respawnPrefabTemplate</c> (and <c>resourcesSpawnPath</c> for builds). Use <i>Tools → Persistence</i> in the editor to add identity to a selection.</para>
+/// <para><b>Tilemaps:</b> this system does not serialize per-tile paint data — only the Tilemap transform. Runtime tile changes need a different approach or keep walls as regular objects/prefabs.</para>
+/// </remarks>
 [DisallowMultipleComponent]
 public class SaveManager : MonoBehaviour
 {

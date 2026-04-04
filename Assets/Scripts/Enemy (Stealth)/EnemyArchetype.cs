@@ -56,6 +56,8 @@ public class EnemyArchetype : MonoBehaviour
     [SerializeField] [Min(0)] private int bulwarksOnEnterChase = 1;
 
     [Header("Sprinter — summoned sweep & chase")]
+    [Tooltip("Off (default): vision cone matches body/sprite facing during sweep. On: extra sway is applied only to the cone mesh, which usually looks disconnected from the sprite.")]
+    [SerializeField] private bool sprinterSweepMeshConeSway;
     [SerializeField] private float sprinterSweepConeSwayDegrees = 8f;
     [SerializeField] private float sprinterSweepConeSwaySpeed = 1.15f;
     [SerializeField] private float sprinterSweepAngularSpeed = 52f;
@@ -82,6 +84,7 @@ public class EnemyArchetype : MonoBehaviour
     public float OffscreenMarginWorld => offscreenMarginWorld;
     public GameObject BulwarkPrefab => bulwarkPrefab;
     public int BulwarksOnEnterChase => bulwarksOnEnterChase;
+    public bool SprinterSweepMeshConeSway => sprinterSweepMeshConeSway;
     public float SprinterSweepConeSwayDegrees => sprinterSweepConeSwayDegrees;
     public float SprinterSweepConeSwaySpeed => sprinterSweepConeSwaySpeed;
     public float SprinterSweepAngularSpeed => sprinterSweepAngularSpeed;

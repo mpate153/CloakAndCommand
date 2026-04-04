@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreditsScroll
   creditsContent: {fileID: 1412682282}
+  creditsScrollFromEditorPlacement: 0
   scrollSpeed: 120
   placeBelowVisibleArea: 1
   visibleArea: {fileID: 693408326}
@@ -251,6 +252,13 @@ MonoBehaviour:
   parallaxLayers: []
   parallaxSpeedScale: 0.5
   parallaxSpeeds: []
+  parallaxBackground: {fileID: 0}
+  parallaxBackgroundScrollFromEditorPlacement: 0
+  parallaxImageScrollSpeed: 110
+  loopParallaxImages: 1
+  parallaxImageViewport: {fileID: 1874911606}
+  parallaxImagePaddingBelow: 48
+  parallaxImageStartOffsetY: -1200
 --- !u!114 &693408328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,6 +559,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneNavigator
   playSceneName: StealthConcept
   backFallbackSceneName: MainMenu
+  settingsSceneName: SettingsMenu
+  deleteLayoutSaveOnGameOverRetry: 1
 --- !u!114 &978494610
 MonoBehaviour:
   m_ObjectHideFlags: 0
