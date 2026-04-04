@@ -42,7 +42,7 @@ public class TurretMultihit : Turret
         {
             if (targetList[i] != null)
             {
-                GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, Quaternion.identity);
                 Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
                 bulletScript.SetTarget(targetList[i]);
                 bulletScript.SetDamage(damage);

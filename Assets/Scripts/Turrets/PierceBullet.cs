@@ -22,7 +22,8 @@ public class PierceBullet : Bullet
             if (bulletTarget != null)
             {
                 lastPosition = transform.position;
-                transform.position = Vector3.MoveTowards(transform.position, bulletTarget.transform.position, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, bulletTarget.transform.position, bulletSpeed * Time.deltaTime);
+                RotateToTarget();
                 moveDirection = (transform.position - lastPosition).normalized;
             }
             else
@@ -33,7 +34,7 @@ public class PierceBullet : Bullet
         else
         {
             Debug.Log("Piercing");
-            transform.position += moveDirection * speed * Time.deltaTime;
+            transform.position += moveDirection * bulletSpeed * Time.deltaTime;
             pierceTimer += Time.deltaTime;
             if (pierceTimer >= pierceDuration)
             {

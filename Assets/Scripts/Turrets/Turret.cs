@@ -9,6 +9,7 @@ public class Turret : MonoBehaviour
     [Header("References")]
     [SerializeField] protected LayerMask enemyMask;
     [SerializeField] protected GameObject bulletPrefab;
+    [SerializeField] protected GameObject bulletSpawnPoint;
 
     [Header("Attributes")]
     [SerializeField] protected float range;
@@ -82,14 +83,14 @@ public class Turret : MonoBehaviour
         {
             if(!useDOT)
             {
-                GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, Quaternion.identity);
                 Bullet bulletScript = bulletInstance.GetComponent<Bullet>();
                 bulletScript.SetTarget(target);
                 bulletScript.SetDamage(damage);
             }
             else
             {
-                GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, Quaternion.identity);
                 DOTBullet bulletScipt = bulletInstance.GetComponent<DOTBullet>();
                 bulletScipt.SetTarget(target);
                 bulletScipt.SetDamage(damage);
@@ -98,7 +99,7 @@ public class Turret : MonoBehaviour
         }
         else
         {
-            GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, Quaternion.identity);
             Bullet bulletScript = bulletInstance.GetComponent<PierceBullet>();
             bulletScript.SetTarget(target);
             bulletScript.SetDamage(damage);

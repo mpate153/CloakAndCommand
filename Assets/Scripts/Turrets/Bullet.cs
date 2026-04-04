@@ -5,7 +5,7 @@ public class Bullet : MonoBehaviour
 {
 
     [Header("Attributes")]
-    [SerializeField] protected float speed = 8f;
+    [SerializeField] protected float bulletSpeed = 8f;
 
     protected GameObject bulletTarget;
     protected float bulletDamage = 0f;
@@ -14,7 +14,8 @@ public class Bullet : MonoBehaviour
     {
         if (bulletTarget != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, bulletTarget.transform.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, bulletTarget.transform.position, bulletSpeed * Time.deltaTime);
+            RotateToTarget();
         }
         else
         {
@@ -32,10 +33,22 @@ public class Bullet : MonoBehaviour
         bulletDamage = damage;
     }
 
+    public void SetSpeed(float speed)
+    {
+        bulletSpeed = speed;
+    }
+
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         TDEnemyProperties objectHitScript = other.gameObject.GetComponent<TDEnemyProperties>();
         objectHitScript.TakeDamage(bulletDamage);
         Destroy(gameObject);
+    }
+
+    protected virtual void RotateToTarget()
+    {
+        float angle = Mathf.Atan2(bulletTarget.transform.position.y - transform.position.y, bulletTarget.transform.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
+
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }
