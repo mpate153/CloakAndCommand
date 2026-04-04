@@ -148,7 +148,7 @@ MonoBehaviour:
   useCharges: 0
   chargeTime: 0
   maxCharges: 0
-  rotationSpeed: 120
+  rotationSpeed: 300
   useDOT: 1
   DOTInterval: 1
   pierceBullet: 0
