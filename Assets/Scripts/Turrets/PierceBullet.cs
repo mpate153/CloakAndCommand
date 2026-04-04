@@ -33,7 +33,6 @@ public class PierceBullet : Bullet
         }
         else
         {
-            Debug.Log("Piercing");
             transform.position += moveDirection * bulletSpeed * Time.deltaTime;
             pierceTimer += Time.deltaTime;
             if (pierceTimer >= pierceDuration)
