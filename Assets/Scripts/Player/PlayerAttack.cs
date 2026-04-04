@@ -57,7 +57,10 @@ public sealed class PlayerAttack : MonoBehaviour
         forward.Normalize();
 
         Vector2 origin = (Vector2)transform.position + forward * hitDistance;
-        int n = Physics2D.OverlapCircleNonAlloc(origin, hitRadius, Hits, hitMask);
+        var hitFilter = new ContactFilter2D();
+        hitFilter.SetLayerMask(hitMask);
+        hitFilter.useTriggers = Physics2D.queriesHitTriggers;
+        int n = Physics2D.OverlapCircle(origin, hitRadius, hitFilter, Hits);
         EnemyPatrol best = null;
         float bestD = float.MaxValue;
         for (int i = 0; i < n; i++)

@@ -146,7 +146,13 @@ Mishaal Patel
 Kego Wigwas
 Hari Vallath
 
-#### Additional Art
+
+
+
+
+
+#### ADDITIONAL ART
+
 
 ##### Tech Dungeon: Roguelite - Asset Pack
 Created by Pupkin Assets (itch.io)
@@ -166,7 +172,10 @@ Created by Musicjab (Reddit)
 #### Audio Director
 Hari Vallath
 
-#### Music
+
+
+#### MUSIC
+
 
 ##### Chiptune Heist Music
 Performed by Bertsz (Freesound)
@@ -179,7 +188,10 @@ Composed by Ludwig van Beethoven
 Performed by Nesrality (Pixabay.com)
 <!-- This one's a joke, don't submit game with it -->
 
-#### Additional Audio
+
+
+#### ADDITIONAL AUDIO
+
 
 ##### Death Enemy 2 (from Left: Aliened) 
 Performed by Kego Wigwas

@@ -106,8 +106,21 @@ public class EnemyAI : MonoBehaviour
         SyncVisionAndMovementAfterSaveLoad(patrolBehaviourEnabled);
     }
 
+    /// <summary>Save load can run before <see cref="Awake"/> on this instance; cache components lazily.</summary>
+    void EnsureVisionAndMovementCached()
+    {
+        if (_vision == null)
+            _vision = GetComponent<EnemyVision>();
+        if (_movement == null)
+            _movement = GetComponent<EnemyMovement>();
+    }
+
     void SyncVisionAndMovementAfterSaveLoad(bool patrolWasEnabled)
     {
+        EnsureVisionAndMovementCached();
+        if (_vision == null || _movement == null)
+            return;
+
         if (_sprinterFlow)
         {
             if (patrolBehaviour != null)

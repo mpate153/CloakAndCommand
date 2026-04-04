@@ -17,6 +17,7 @@ public class EnemyVision : MonoBehaviour
     [SerializeField] private float detectionRangeInset = 0.1f;
     [Tooltip("Player must be this many degrees inside cone edge before detection triggers.")]
     [SerializeField] private float detectionAngleInsetDegrees = 2f;
+    [Tooltip("Layers with colliders that block sight and clip the cone (include Default if walls/tilemaps use it). If Nothing, falls back to Physics2D.DefaultRaycastLayers at runtime.")]
     [SerializeField] private LayerMask obstacleMask;
 
     [Header("Cone Visuals")]
@@ -40,12 +41,15 @@ public class EnemyVision : MonoBehaviour
     [SerializeField] private LayerMask coneClipMask;
     [Tooltip("Small visual extension after hit point. Keep near 0 for stable clipping.")]
     [SerializeField] private float coneClipPadding = 0f;
-    [Tooltip("Ignore trigger colliders when clipping cone rays.")]
-    [SerializeField] private bool ignoreTriggerCollidersForConeClip = true;
+    [Tooltip("If true, trigger colliders never clip the cone mesh. Turn off when walls use Is Trigger, or assign a Cone Clip Mask that excludes decorative triggers.")]
+    [SerializeField] private bool ignoreTriggerCollidersForConeClip = false;
     [Header("Debug")]
     [SerializeField] private bool debugDrawConeRays = false;
     [SerializeField] private Color debugRayNoHitColor = new Color(0.2f, 1f, 0.2f, 0.8f);
     [SerializeField] private Color debugRayHitColor = new Color(1f, 0.2f, 0.2f, 0.95f);
+
+    [Tooltip("How far short of the target counts as “before” for wall occlusion (avoids float flicker at the player).")]
+    [SerializeField] private float losDistanceEpsilon = 0.04f;
 
     // ── Public read-only ─────────────────────────────────────────────────────
     public bool CanSeePlayer { get; private set; }
@@ -66,6 +70,12 @@ public class EnemyVision : MonoBehaviour
     private bool _idleConeSwayActive;
     private float _idleSwayAmplitudeDegrees = 6f;
     private float _idleSwaySpeed = 1.1f;
+
+    /// <summary>Serialized mask, or <see cref="Physics2D.DefaultRaycastLayers"/> when the field is left at Nothing (0).</summary>
+    LayerMask EffectiveObstacleMask => obstacleMask.value != 0 ? obstacleMask : Physics2D.DefaultRaycastLayers;
+
+    LayerMask EffectiveConeClipMask =>
+        coneClipMask.value != 0 ? coneClipMask : EffectiveObstacleMask;
 
     // ────────────────────────────────────────────────────────────────────────
     //  Unity lifecycle
@@ -99,6 +109,7 @@ public class EnemyVision : MonoBehaviour
         detectionAngleInsetDegrees = Mathf.Max(0f, detectionAngleInsetDegrees);
         coneMeshSegments = Mathf.Clamp(coneMeshSegments, 3, 64);
         coneClipPadding = Mathf.Max(0f, coneClipPadding);
+        losDistanceEpsilon = Mathf.Clamp(losDistanceEpsilon, 0.001f, 0.5f);
         if (Application.isPlaying && _mesh != null)
             RebuildConeMesh();
     }
@@ -250,30 +261,17 @@ public class EnemyVision : MonoBehaviour
         Vector2 toPlayer = (Vector2)PlayerTransform.position - origin;
         float dist = toPlayer.magnitude;
         if (dist < 0.001f) return true;
-        RaycastHit2D hit = Physics2D.Raycast(origin, toPlayer.normalized, dist, obstacleMask);
-        return hit.collider == null;
+        return !RayBlockedByOpaqueObstacles(origin, toPlayer / dist, dist, EffectiveObstacleMask, ignorePlayerAsOccluder: true);
     }
 
-    /// <summary>LOS for lure tests: ignores hits on <see cref="SpawnLure"/> so the lure collider / shared layers cannot block sight.</summary>
+    /// <summary>LOS for lure tests: ignores self + <see cref="SpawnLure"/>; player colliders still block.</summary>
     bool LineClearToPointIgnoringLures(Vector2 origin, Vector2 targetWorld)
     {
         Vector2 to = targetWorld - origin;
         float dist = to.magnitude;
         if (dist < 0.001f)
             return true;
-        Vector2 dir = to / dist;
-        var hits = Physics2D.RaycastAll(origin, dir, dist, obstacleMask);
-        float nearestBlock = float.MaxValue;
-        for (int i = 0; i < hits.Length; i++)
-        {
-            RaycastHit2D h = hits[i];
-            if (h.collider == null) continue;
-            if (h.collider.GetComponentInParent<SpawnLure>() != null)
-                continue;
-            if (h.distance < nearestBlock)
-                nearestBlock = h.distance;
-        }
-        return nearestBlock >= dist - 0.001f;
+        return !RayBlockedByOpaqueObstacles(origin, to / dist, dist, EffectiveObstacleMask, ignorePlayerAsOccluder: false, ignoreLureColliders: true);
     }
 
     private bool CheckLineOfSight()
@@ -284,8 +282,54 @@ public class EnemyVision : MonoBehaviour
 
         if (!IsInsideDetectionCore(toPlayer, dist)) return false;
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, toPlayer.normalized, dist, obstacleMask);
-        return hit.collider == null;
+        return !RayBlockedByOpaqueObstacles(origin, toPlayer / dist, dist, EffectiveObstacleMask, ignorePlayerAsOccluder: true);
+    }
+
+    /// <summary>
+    /// True if an occluding collider lies between <paramref name="origin"/> and distance <paramref name="distance"/> along <paramref name="dir"/> (unit).
+    /// Skips this enemy’s colliders. Optionally treats the player as non-blocking (so LOS is “wall in front of player?” not “first hit”).
+    /// </summary>
+    bool RayBlockedByOpaqueObstacles(
+        Vector2 origin,
+        Vector2 dir,
+        float distance,
+        LayerMask mask,
+        bool ignorePlayerAsOccluder,
+        bool ignoreLureColliders = false)
+    {
+        if (distance < 1e-4f)
+            return false;
+
+        var hits = Physics2D.RaycastAll(
+            origin,
+            dir,
+            distance,
+            mask,
+            float.NegativeInfinity,
+            float.PositiveInfinity);
+
+        float cutoff = Mathf.Max(0f, distance - losDistanceEpsilon);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit2D h = hits[i];
+            if (h.collider == null) continue;
+            if (IsSelfCollider(h.collider)) continue;
+            if (ignorePlayerAsOccluder && IsPlayerPassthroughCollider(h.collider)) continue;
+            if (ignoreLureColliders && h.collider.GetComponentInParent<SpawnLure>() != null) continue;
+
+            if (h.distance < cutoff)
+                return true;
+        }
+
+        return false;
+    }
+
+    bool IsPlayerPassthroughCollider(Collider2D col)
+    {
+        if (col == null) return false;
+        if (!string.IsNullOrEmpty(playerTag) && col.CompareTag(playerTag)) return true;
+        return col.GetComponentInParent<PlayerMovement>(true) != null;
     }
 
     private bool IsInsideDetectionCore(Vector2 toPoint, float dist)
@@ -360,12 +404,15 @@ public class EnemyVision : MonoBehaviour
             Vector2 localDir = new Vector2(ld3.x, ld3.y);
             float sampleDistance = vr;
 
+            Vector3 worldDir3 = transform.TransformDirection(new Vector3(localDir.x, localDir.y, 0f));
+            if (worldDir3.sqrMagnitude < 1e-10f)
+                worldDir3 = Vector3.up;
+            worldDir3.Normalize();
+            Vector2 worldDir = new Vector2(worldDir3.x, worldDir3.y);
+
             if (clipConeAgainstObstacles)
             {
-                LayerMask mask = coneClipMask.value == 0 ? obstacleMask : coneClipMask;
-                Vector2 worldDir = /* sway baked into localDir in parent space → use up-from-local */
-                    ((Vector3)localDir).normalized;
-                worldDir = transform.TransformDirection(worldDir).normalized;
+                LayerMask mask = EffectiveConeClipMask;
                 sampleDistance = GetVisualClipDistance((Vector2)transform.position, worldDir, vr, mask, out bool clippedByHit);
                 _debugRayHit[i] = clippedByHit;
             }
@@ -374,9 +421,12 @@ public class EnemyVision : MonoBehaviour
                 _debugRayHit[i] = false;
             }
 
-            verts[i + 1] = new Vector3(localDir.x * sampleDistance, localDir.y * sampleDistance, 0f);
+            // Clip distances are world-space (Physics2D). Convert rim to local verts so parent lossy scale / rotation match the raycast.
+            Vector3 apexWorld = transform.position;
+            Vector3 rimWorld = apexWorld + new Vector3(worldDir.x, worldDir.y, 0f) * sampleDistance;
+            verts[i + 1] = transform.InverseTransformPoint(rimWorld);
             uvs[i + 1] = new Vector2(t, 1f);
-            _debugRayEnds[i] = transform.TransformPoint(verts[i + 1]);
+            _debugRayEnds[i] = rimWorld;
         }
 
         int vi = 0;
@@ -396,7 +446,13 @@ public class EnemyVision : MonoBehaviour
 
     private float GetVisualClipDistance(Vector2 origin, Vector2 worldDir, float maxDistance, LayerMask mask, out bool clippedByHit)
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, worldDir, maxDistance, mask);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(
+            origin,
+            worldDir,
+            maxDistance,
+            mask,
+            float.NegativeInfinity,
+            float.PositiveInfinity);
         float nearest = maxDistance;
         clippedByHit = false;
 
@@ -405,6 +461,7 @@ public class EnemyVision : MonoBehaviour
             RaycastHit2D hit = hits[i];
             if (hit.collider == null) continue;
             if (IsSelfCollider(hit.collider)) continue;
+            if (IsPlayerPassthroughCollider(hit.collider)) continue;
             if (ignoreTriggerCollidersForConeClip && hit.collider.isTrigger) continue;
 
             float d = hit.distance + coneClipPadding;

@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8f3c2e1d0b4a8f9e7c6d5b4a302918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneNavigator
-  playSceneName: StealthConcept
+  playSceneName: StealthOpen
   backFallbackSceneName: MainMenu
   settingsSceneName: SettingsMenu
   deleteLayoutSaveOnGameOverRetry: 1

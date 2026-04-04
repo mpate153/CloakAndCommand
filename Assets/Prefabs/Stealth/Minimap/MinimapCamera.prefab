@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8378908537553892162}
   - component: {fileID: 3211660229775242135}
   - component: {fileID: 3885084860743697604}
+  - component: {fileID: 5123456789012345678}
   m_Layer: 0
   m_Name: MinimapCamera
   m_TagString: Untagged
@@ -141,3 +142,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b2c3d4e5f6789012345678abcdef01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MinimapBehavior
+--- !u!114 &5123456789012345678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8393582459356285818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e4d5c6b7a80912f3e4d5c6b7a8091a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinimapSolidTilemapMesh
+  solidColor: {r: 0.35, g: 0.38, b: 0.42, a: 1}
+  tilemapOverrides: []
+  sourceTilemapLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  outputLayerName: MINIMAP
+  minimapCameraIncludesOutputLayer: 1
+  hideMeshedTilemapLayersFromMinimap: 1
+  hideOutputLayerFromOtherCameras: 1

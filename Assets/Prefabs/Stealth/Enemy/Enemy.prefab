@@ -242,7 +242,7 @@ MonoBehaviour:
   detectionAngleInsetDegrees: 2
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 4294967295
   calmConeColor: {r: 0.6745098, g: 0.82122153, b: 1, a: 0.25}
   suspiciousFlashColor: {r: 1, g: 0.6862745, b: 0, a: 0.55}
   searchConeColor: {r: 1, g: 0.684497, b: 0, a: 0.35}
@@ -256,7 +256,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   coneClipPadding: 0
-  ignoreTriggerCollidersForConeClip: 1
+  ignoreTriggerCollidersForConeClip: 0
   debugDrawConeRays: 0
   debugRayNoHitColor: {r: 0.2, g: 1, b: 0.2, a: 0.8}
   debugRayHitColor: {r: 1, g: 0.2, b: 0.2, a: 0.95}

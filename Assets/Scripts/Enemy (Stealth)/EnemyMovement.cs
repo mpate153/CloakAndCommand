@@ -329,11 +329,19 @@ public class EnemyMovement : MonoBehaviour
     static bool IsPlayerCollider(Collider2D col) =>
         col != null && col.GetComponentInParent<PlayerMovement>(true) != null;
 
+    int OverlapSeparation(Vector2 position, float radius)
+    {
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(separationMask);
+        filter.useTriggers = Physics2D.queriesHitTriggers;
+        return Physics2D.OverlapCircle(position, radius, filter, _separationHits);
+    }
+
     void TryDepenetrateFromPlayerIfOverlapping()
     {
         if (_selfCollider == null) return;
         float r = Mathf.Max(separationRadius, 0.55f);
-        int n = Physics2D.OverlapCircleNonAlloc(_body.position, r, _separationHits, separationMask);
+        int n = OverlapSeparation(_body.position, r);
         for (int i = 0; i < n; i++)
         {
             var col = _separationHits[i];
@@ -356,7 +364,7 @@ public class EnemyMovement : MonoBehaviour
             return desiredDir;
 
         float radius = Mathf.Max(0.05f, separationRadius);
-        int count = Physics2D.OverlapCircleNonAlloc(_body.position, radius, _separationHits, separationMask);
+        int count = OverlapSeparation(_body.position, radius);
         if (count <= 0)
             return desiredDir;
 

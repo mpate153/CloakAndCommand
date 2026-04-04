@@ -158,13 +158,21 @@ public class EnemyPatrol : MonoBehaviour
         return finalDist;
     }
 
+    int OverlapSeparation(Vector2 position, float radius)
+    {
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(separationMask);
+        filter.useTriggers = Physics2D.queriesHitTriggers;
+        return Physics2D.OverlapCircle(position, radius, filter, _separationHits);
+    }
+
     private Vector2 ApplySeparation(Vector2 desiredDir)
     {
         if (!enableSeparation || desiredDir.sqrMagnitude < 1e-6f)
             return desiredDir;
 
         float radius = Mathf.Max(0.05f, separationRadius);
-        int count = Physics2D.OverlapCircleNonAlloc(myBody.position, radius, _separationHits, separationMask);
+        int count = OverlapSeparation(myBody.position, radius);
         if (count <= 0)
             return desiredDir;
 

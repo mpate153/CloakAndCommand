@@ -15,7 +15,7 @@ public class SceneNavigator : MonoBehaviour
 
     static readonly List<EventSystem> EventSystemsDisabledForSettingsOverlay = new List<EventSystem>(4);
 
-    [SerializeField] string playSceneName = "StealthConcept";
+    [SerializeField] string playSceneName = "StealthOpen";
 
     [Header("Back")]
     [Tooltip("When the history stack is empty, Go Back loads this scene (e.g. main menu).")]

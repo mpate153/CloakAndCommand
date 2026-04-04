@@ -13,7 +13,7 @@ using UnityEditor;
 
 /// <summary>
 /// Saves world positions (and rotation/scale) of objects in a scene to JSON under
-/// <see cref="Application.persistentDataPath"/> — one file per scene name, e.g. <c>SceneLayout_StealthConcept.json</c>.
+/// <see cref="Application.persistentDataPath"/> — one file per scene name, e.g. <c>SceneLayout_StealthOpen.json</c>.
 /// Add to a GameObject (e.g. named SaveManager); call <see cref="SaveLayout"/> / <see cref="LoadLayout"/>
 /// from buttons or enable auto load/save flags.
 /// </summary>
@@ -322,7 +322,14 @@ public class SaveManager : MonoBehaviour
                     Transform t = FindTransformForEnemyRecord(scene, er.hierarchyPath, er.persistentId);
                     if (t == null || !t.TryGetComponent<EnemyAI>(out var ai))
                         continue;
-                    SceneEnemySave.ApplyEnemyAI(ai, er.data);
+                    try
+                    {
+                        SceneEnemySave.ApplyEnemyAI(ai, er.data);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
                 }
             }
 
