@@ -7,6 +7,8 @@ public class TDEnemyCount : MonoBehaviour
     //Must include gameObject in scene with this script attachted; No clue if loading scenes breaks this counter
     public static TDEnemyCount Instance { get; set; }
 
+    [SerializeField] private GameObject sceneTransition;
+
     private int eCount = 0; //Tracks current # of enemies
     private int eSpawned = 0; //Tracks how many spawned
     private int eTotal = 0; //Tracks how many will spawn
@@ -39,14 +41,14 @@ public class TDEnemyCount : MonoBehaviour
         if (eDefeat == eTotal)
         {
             Debug.Log("All enemies cleared");
-            //Trigger victory condition here
-            Debug.Break(); //COMMENT THIS OUT IN FINAL RELEASE
+            //I think this works??
+            sceneTransition.GetComponent<SceneNavigator>().GoBackToPreviousScene(); //Should send back
         }
         //All enemies spawned but NOT all defeated
         if (eCount == 0 && eSpawned == eTotal)
         {
             Debug.Log("All enemies managed"); //This message will always print
-            Debug.Break();
+            sceneTransition.GetComponent<SceneNavigator>().GoBackToPreviousScene();
         }
     }
 }

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TDObjectiveHealth : MonoBehaviour
 {
@@ -19,8 +20,7 @@ public class TDObjectiveHealth : MonoBehaviour
         Debug.Log(health);
         if (health <= 0)
         {
-            Debug.Log("Game Over");
-            Debug.Break();
+            SceneManager.LoadScene("GameOverMenu");
         }
     }
 

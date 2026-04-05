@@ -493,7 +493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8423837224215198128, guid: c2fc622ddce31ee468e1c5a56154ee5f, type: 3}
       propertyPath: toggleCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8423837224215198128, guid: c2fc622ddce31ee468e1c5a56154ee5f, type: 3}
       propertyPath: spawnPts.Array.size
@@ -589,6 +589,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1105353861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &955093440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 955093441}
+  - component: {fileID: 955093443}
+  - component: {fileID: 955093442}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &955093441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955093440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &955093442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955093440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3748b81b74351488f24d50612c663a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTracker
+  levelSceneNameOverride: 
+  recordOnEnable: 1
+--- !u!114 &955093443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955093440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e2c9a1846d403fb5e81d6c2a904eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  loadOnStart: 0
+  saveOnApplicationQuit: 1
+  loadDelaySeconds: 0.1
+  hideSceneUntilLayoutApplied: 1
+  layoutRevealFadeOutSeconds: 0.12
+  skipUI: 1
+  skipCameras: 1
+  skipLights: 1
+  saveWhenPaused: 1
+  autoSaveIntervalSeconds: 15
+  logSaveLoad: 1
 --- !u!1001 &967182038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2292,8 +2362,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6282300331068562226, guid: 13520d89e1cc4714898ea377b56aa7ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2275777808892957672}
   m_SourcePrefab: {fileID: 100100000, guid: 13520d89e1cc4714898ea377b56aa7ae, type: 3}
+--- !u!1 &2275777808892957671 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6282300331068562226, guid: 13520d89e1cc4714898ea377b56aa7ae, type: 3}
+  m_PrefabInstance: {fileID: 2275777808892957670}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2275777808892957672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275777808892957671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8f3c2e1d0b4a8f9e7c6d5b4a302918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneNavigator
+  playSceneName: StealthOpen
+  backFallbackSceneName: MainMenu
+  settingsSceneName: SettingsMenu
+  deleteLayoutSaveOnGameOverRetry: 1
 --- !u!1001 &4866434392072600741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2350,6 +2444,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5752766149446381173, guid: ab490ab481f0eb245b6e581e4e168aa6, type: 3}
+      propertyPath: sceneTransition
+      value: 
+      objectReference: {fileID: 2275777808892957671}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2455,3 +2553,4 @@ SceneRoots:
   - {fileID: 1924462171}
   - {fileID: 1230750448}
   - {fileID: 1911753524}
+  - {fileID: 955093441}
