@@ -1,5 +1,6 @@
 # Attack of the Radioactive Things
-ATop-down **stealth-action-tower-defense** game in Unity.
+
+A top-down **stealth-action-tower-defense** game in Unity.
 
 This repository is a Unity project with some local caches missing. When you open it in Unity, it will generate the missing files automatically. This may take a few minutes.
 
