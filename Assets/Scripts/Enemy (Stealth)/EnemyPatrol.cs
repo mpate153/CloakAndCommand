@@ -175,6 +175,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (health <= 0)
         {
+            DestroyedEnemySaveTracker.RegisterKilledEnemyRoot(transform.root);
             Destroy(gameObject);
             return;
         }
@@ -268,6 +269,7 @@ public class EnemyPatrol : MonoBehaviour
             if (currWaypointIndex < 0)
             {
                 enabled = false;
+                DestroyedEnemySaveTracker.RegisterKilledEnemyRoot(transform.root);
                 Destroy(gameObject);
             }
         }

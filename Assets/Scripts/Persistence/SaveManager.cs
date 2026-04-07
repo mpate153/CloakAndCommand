@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,8 +20,10 @@ using UnityEditor;
 /// </summary>
 /// <remarks>
 /// <para><b>What is included:</b> a depth-first walk of the loaded scene (skips UI under Canvas, cameras, lights, EventSystem unless you turn those off).
-/// Each transform stores world pose; <see cref="SpriteRenderer"/> and dynamic <see cref="Rigidbody2D"/> velocity when present.
-/// <see cref="EnemyAI"/> / <see cref="EnemyPatrol"/> state is saved separately; enemies also get <see cref="ScenePersistedIdentity"/> auto-added.</para>
+/// Each transform stores world pose; <see cref="GameObject.activeSelf"/>; non-tilemap <see cref="Collider2D"/> shapes (offset, size, rotation, trigger, polygon/edge points);
+/// <see cref="SpriteRenderer"/> and dynamic <see cref="Rigidbody2D"/> velocity when present.
+/// <see cref="EnemyAI"/> / <see cref="EnemyPatrol"/> state is saved separately; enemies also get <see cref="ScenePersistedIdentity"/> auto-added.
+/// Killed enemies are listed in <see cref="SceneLayoutSnapshot.destroyedEnemyPersistentIds"/> / <c>destroyedEnemyHierarchyPaths</c> so they are not restored from the scene file on load.</para>
 /// <para><b>Props &amp; walls:</b> static scene objects are saved by hierarchy path (object names from root). For anything you might rename, duplicate, spawn at runtime, or that must respawn after load,
 /// add <see cref="ScenePersistedIdentity"/> and assign <c>respawnPrefabTemplate</c> (and <c>resourcesSpawnPath</c> for builds). Use <i>Tools → Persistence</i> in the editor to add identity to a selection.</para>
 /// <para><b>Tilemaps:</b> this system does not serialize per-tile paint data — only the Tilemap transform. Runtime tile changes need a different approach or keep walls as regular objects/prefabs.</para>
@@ -68,7 +71,7 @@ public class SaveManager : MonoBehaviour
     const string FilePrefix = "SceneLayout_";
 
     /// <summary>Increment when JSON shape changes; still loads older files without gameplay blocks.</summary>
-    public const int CurrentSnapshotVersion = 7;
+    public const int CurrentSnapshotVersion = 9;
 
     Coroutine _autoSaveRoutine;
     GameObject _loadCurtainRoot;
@@ -203,6 +206,8 @@ public class SaveManager : MonoBehaviour
 
         SaveSummonedEnemyRecord[] saveSummonedEnemies = BuildSaveSummonedEnemiesSnapshot(scene);
 
+        DestroyedEnemySaveTracker.CopyToArrays(scene.name, out string[] desIds, out string[] desPaths);
+
         var snapshot = new SceneLayoutSnapshot
         {
             snapshotVersion = CurrentSnapshotVersion,
@@ -210,7 +215,9 @@ public class SaveManager : MonoBehaviour
             transforms = list.ToArray(),
             enemyPatrols = patrols.ToArray(),
             enemyBrains = brains.ToArray(),
-            saveSummonedEnemies = saveSummonedEnemies
+            saveSummonedEnemies = saveSummonedEnemies,
+            destroyedEnemyPersistentIds = desIds,
+            destroyedEnemyHierarchyPaths = desPaths
         };
 
         string path = GetFilePath(scene.name);
@@ -218,7 +225,7 @@ public class SaveManager : MonoBehaviour
         {
             File.WriteAllText(path, JsonUtility.ToJson(snapshot, true), Encoding.UTF8);
             if (logSaveLoad)
-                Debug.Log($"[SaveManager] Saved {list.Count} transforms, {patrols.Count} patrols, {brains.Count} brains, {saveSummonedEnemies.Length} summoned enemies → {path}", this);
+                Debug.Log($"[SaveManager] Saved {list.Count} transforms, {patrols.Count} patrols, {brains.Count} brains, {saveSummonedEnemies.Length} summoned, destroyed ids={desIds.Length} paths={desPaths.Length} → {path}", this);
         }
         catch (Exception e)
         {
@@ -238,6 +245,7 @@ public class SaveManager : MonoBehaviour
             string path = GetFilePath(scene.name);
             if (!File.Exists(path))
             {
+                DestroyedEnemySaveTracker.ClearScene(scene.name);
                 if (logSaveLoad)
                     Debug.Log($"[SaveManager] No file for scene '{scene.name}' at {path}", this);
                 return;
@@ -261,8 +269,15 @@ public class SaveManager : MonoBehaviour
             if (snapshot == null || snapshot.transforms == null)
                 return;
 
+            DestroyedEnemySaveTracker.ReplaceFromSnapshot(
+                scene.name,
+                snapshot.destroyedEnemyPersistentIds,
+                snapshot.destroyedEnemyHierarchyPaths);
+
             SpawnMissingPersistedRoots(scene, snapshot.transforms);
             HashSet<string> idsAppliedInSummonedRestore = RestoreSaveSummonedEnemies(scene, snapshot.saveSummonedEnemies);
+
+            DestroyKilledEnemiesStillInScene(scene, snapshot);
 
             int applied = 0;
             foreach (TransformRecord rec in snapshot.transforms)
@@ -292,6 +307,11 @@ public class SaveManager : MonoBehaviour
                         rb.angularVelocity = rec.rb2dAngularVelocity;
                     }
                 }
+
+                ApplyCollider2DRecords(rec, t);
+
+                if (rec.hasGameObjectActiveState)
+                    t.gameObject.SetActive(rec.gameObjectActiveSelf);
 
                 applied++;
             }
@@ -462,6 +482,10 @@ public class SaveManager : MonoBehaviour
             rec.rb2dAngularVelocity = rb.angularVelocity;
         }
 
+        rec.colliders2D = CaptureCollider2DRecords(t);
+        rec.hasGameObjectActiveState = true;
+        rec.gameObjectActiveSelf = t.gameObject.activeSelf;
+
         list.Add(rec);
 
         for (int i = 0; i < t.childCount; i++)
@@ -606,6 +630,162 @@ public class SaveManager : MonoBehaviour
         return rel.Replace('\\', '/');
     }
 
+    /// <summary>0 box, 1 circle, 2 capsule, 3 polygon, 4 edge. Skips composite/tilemap colliders.</summary>
+    const int ColShapeBox = 0;
+    const int ColShapeCircle = 1;
+    const int ColShapeCapsule = 2;
+    const int ColShapePolygon = 3;
+    const int ColShapeEdge = 4;
+
+    static Collider2D[] CollidersToPersistOnTransform(Transform t)
+    {
+        Collider2D[] cols = t.GetComponents<Collider2D>();
+        var list = new List<Collider2D>(cols.Length);
+        for (int i = 0; i < cols.Length; i++)
+        {
+            Collider2D c = cols[i];
+            if (c == null)
+                continue;
+            if (c is CompositeCollider2D || c is TilemapCollider2D)
+                continue;
+            if (c is BoxCollider2D || c is CircleCollider2D || c is CapsuleCollider2D || c is PolygonCollider2D || c is EdgeCollider2D)
+                list.Add(c);
+        }
+        return list.ToArray();
+    }
+
+    static Collider2DSnapshot[] CaptureCollider2DRecords(Transform t)
+    {
+        Collider2D[] cols = CollidersToPersistOnTransform(t);
+        if (cols.Length == 0)
+            return null;
+        var snaps = new Collider2DSnapshot[cols.Length];
+        for (int i = 0; i < cols.Length; i++)
+            snaps[i] = CaptureCollider2DSnapshot(cols[i]);
+        return snaps;
+    }
+
+    static Collider2DSnapshot CaptureCollider2DSnapshot(Collider2D c)
+    {
+        var s = new Collider2DSnapshot
+        {
+            enabled = c.enabled,
+            isTrigger = c.isTrigger
+        };
+        switch (c)
+        {
+            case BoxCollider2D b:
+                s.shape = ColShapeBox;
+                s.offset = b.offset;
+                s.size = b.size;
+                break;
+            case CircleCollider2D cir:
+                s.shape = ColShapeCircle;
+                s.offset = cir.offset;
+                s.radius = cir.radius;
+                break;
+            case CapsuleCollider2D cap:
+                s.shape = ColShapeCapsule;
+                s.offset = cap.offset;
+                s.size = cap.size;
+                break;
+            case PolygonCollider2D poly:
+                s.shape = ColShapePolygon;
+                Vector2[] pts = poly.points;
+                s.pointsFlat = PackVector2Flat(pts);
+                break;
+            case EdgeCollider2D edge:
+                s.shape = ColShapeEdge;
+                s.pointsFlat = PackVector2Flat(edge.points);
+                break;
+        }
+        return s;
+    }
+
+    static float[] PackVector2Flat(Vector2[] pts)
+    {
+        if (pts == null || pts.Length == 0)
+            return Array.Empty<float>();
+        var flat = new float[pts.Length * 2];
+        for (int i = 0; i < pts.Length; i++)
+        {
+            flat[i * 2] = pts[i].x;
+            flat[i * 2 + 1] = pts[i].y;
+        }
+        return flat;
+    }
+
+    static Vector2[] UnpackVector2Flat(float[] flat)
+    {
+        if (flat == null || flat.Length < 2 || flat.Length % 2 != 0)
+            return Array.Empty<Vector2>();
+        int n = flat.Length / 2;
+        var pts = new Vector2[n];
+        for (int i = 0; i < n; i++)
+            pts[i] = new Vector2(flat[i * 2], flat[i * 2 + 1]);
+        return pts;
+    }
+
+    static void ApplyCollider2DRecords(TransformRecord rec, Transform t)
+    {
+        if (rec.colliders2D == null || rec.colliders2D.Length == 0)
+            return;
+        Collider2D[] cols = CollidersToPersistOnTransform(t);
+        int n = Mathf.Min(cols.Length, rec.colliders2D.Length);
+        for (int i = 0; i < n; i++)
+        {
+            Collider2DSnapshot snap = rec.colliders2D[i];
+            if (snap == null)
+                continue;
+            Collider2D c = cols[i];
+            c.enabled = snap.enabled;
+            c.isTrigger = snap.isTrigger;
+            switch (snap.shape)
+            {
+                case ColShapeBox:
+                    if (c is BoxCollider2D b)
+                    {
+                        b.offset = snap.offset;
+                        b.size = snap.size;
+                    }
+                    break;
+                case ColShapeCircle:
+                    if (c is CircleCollider2D cir)
+                    {
+                        cir.offset = snap.offset;
+                        cir.radius = snap.radius;
+                    }
+                    break;
+                case ColShapeCapsule:
+                    if (c is CapsuleCollider2D cap)
+                    {
+                        cap.offset = snap.offset;
+                        cap.size = snap.size;
+                    }
+                    break;
+                case ColShapePolygon:
+                    if (c is PolygonCollider2D poly && snap.pointsFlat != null)
+                    {
+                        Vector2[] pts = UnpackVector2Flat(snap.pointsFlat);
+                        if (pts.Length > 0)
+                        {
+                            poly.pathCount = 1;
+                            poly.SetPath(0, pts);
+                        }
+                    }
+                    break;
+                case ColShapeEdge:
+                    if (c is EdgeCollider2D edge && snap.pointsFlat != null)
+                    {
+                        Vector2[] pts = UnpackVector2Flat(snap.pointsFlat);
+                        if (pts.Length > 0)
+                            edge.points = pts;
+                    }
+                    break;
+            }
+        }
+    }
+
     bool ShouldSkip(Transform t)
     {
         if (skipUI && t.GetComponentInParent<Canvas>(true) != null)
@@ -698,6 +878,58 @@ public class SaveManager : MonoBehaviour
         return FindByHierarchyPath(scene, fullHierarchyPath.Substring(0, i));
     }
 
+    /// <summary>Remove scene-file enemies that were killed in a prior session (saved id/path list).</summary>
+    void DestroyKilledEnemiesStillInScene(Scene scene, SceneLayoutSnapshot snap)
+    {
+        if (snap == null)
+            return;
+        if (snap.destroyedEnemyPersistentIds != null)
+        {
+            foreach (string id in snap.destroyedEnemyPersistentIds)
+            {
+                if (string.IsNullOrEmpty(id))
+                    continue;
+                ScenePersistedIdentity idc = FindIdentityByPersistentId(scene, id);
+                if (idc == null)
+                    continue;
+                DestroyEnemyOwnedHierarchy(idc.transform);
+            }
+        }
+        if (snap.destroyedEnemyHierarchyPaths != null)
+        {
+            foreach (string p in snap.destroyedEnemyHierarchyPaths)
+            {
+                if (string.IsNullOrEmpty(p))
+                    continue;
+                Transform t = FindByHierarchyPath(scene, p);
+                if (t == null)
+                    continue;
+                DestroyEnemyOwnedHierarchy(t);
+            }
+        }
+    }
+
+    static void DestroyEnemyOwnedHierarchy(Transform start)
+    {
+        if (start == null)
+            return;
+        var td = start.GetComponentInParent<TDEnemyProperties>(true);
+        if (td != null)
+        {
+            Destroy(td.gameObject);
+            return;
+        }
+        var ai = start.GetComponentInParent<EnemyAI>(true);
+        if (ai != null)
+        {
+            Destroy(ai.gameObject);
+            return;
+        }
+        var ep = start.GetComponentInParent<EnemyPatrol>(true);
+        if (ep != null)
+            Destroy(ep.gameObject);
+    }
+
     void SpawnMissingPersistedRoots(Scene scene, TransformRecord[] records)
     {
         if (records == null)
@@ -705,6 +937,8 @@ public class SaveManager : MonoBehaviour
         foreach (TransformRecord rec in records)
         {
             if (string.IsNullOrEmpty(rec.persistentId))
+                continue;
+            if (DestroyedEnemySaveTracker.IsPersistentIdMarkedDestroyed(scene.name, rec.persistentId))
                 continue;
             if (FindIdentityByPersistentId(scene, rec.persistentId) != null)
                 continue;
@@ -729,6 +963,10 @@ public class SaveManager : MonoBehaviour
             newId.SetRestoredPersistedId(rec.persistentId);
             if (instance.TryGetComponent<SpriteRenderer>(out SpriteRenderer spawnedSr))
                 ApplySpriteRendererState(rec, spawnedSr);
+
+            ApplyCollider2DRecords(rec, instance.transform);
+            if (rec.hasGameObjectActiveState)
+                instance.SetActive(rec.gameObjectActiveSelf);
         }
     }
 
@@ -770,6 +1008,10 @@ public class SaveManager : MonoBehaviour
                 rec.rb2dAngularVelocity = rb.angularVelocity;
             }
 
+            rec.colliders2D = CaptureCollider2DRecords(t);
+            rec.hasGameObjectActiveState = true;
+            rec.gameObjectActiveSelf = t.gameObject.activeSelf;
+
             EnemyPatrol ep = t.GetComponent<EnemyPatrol>();
             EnemyAISaveData brainData = SceneEnemySave.CaptureEnemyAI(ai);
             list.Add(new SaveSummonedEnemyRecord
@@ -796,6 +1038,8 @@ public class SaveManager : MonoBehaviour
         {
             TransformRecord rec = w.transform;
             if (rec == null || string.IsNullOrEmpty(rec.persistentId))
+                continue;
+            if (DestroyedEnemySaveTracker.IsPersistentIdMarkedDestroyed(scene.name, rec.persistentId))
                 continue;
             if (FindIdentityByPersistentId(scene, rec.persistentId) != null)
                 continue;
@@ -848,6 +1092,10 @@ public class SaveManager : MonoBehaviour
                     mv.ResetSprinterStaleChase(staleSeed);
                 }
             }
+
+            ApplyCollider2DRecords(rec, instance.transform);
+            if (rec.hasGameObjectActiveState)
+                instance.SetActive(rec.gameObjectActiveSelf);
 
             SaveSummonedEnemies.Tag(instance, prefab);
             createdIds.Add(rec.persistentId);
@@ -1121,6 +1369,9 @@ public class SceneLayoutSnapshot
     public EnemyAISaveRecord[] enemyBrains;
     /// <summary>Explicit snapshot of every enemy spawned by a watcher (sprinters / bulwarks), with prefab GUID + AI/patrol.</summary>
     public SaveSummonedEnemyRecord[] saveSummonedEnemies;
+    /// <summary>Enemies removed since first layout save; on load they are destroyed so they do not respawn from the scene file.</summary>
+    public string[] destroyedEnemyPersistentIds;
+    public string[] destroyedEnemyHierarchyPaths;
 }
 
 /// <summary>One watcher-spawned enemy, written only for objects with <see cref="SaveSummonedEnemies"/>.</summary>
@@ -1162,6 +1413,23 @@ public class TransformRecord
     public bool hasRigidbody2DState;
     public Vector2 rb2dLinearVelocity;
     public float rb2dAngularVelocity;
+    /// <summary>Per-object colliders (box/circle/capsule/polygon/edge), excluding composite/tilemap. Order matches <see cref="Collider2D"/> on the same GameObject.</summary>
+    public Collider2DSnapshot[] colliders2D;
+    public bool hasGameObjectActiveState;
+    public bool gameObjectActiveSelf;
+}
+
+/// <summary>Serialized 2D collider fields (local to the rigidbody / transform).</summary>
+[Serializable]
+public class Collider2DSnapshot
+{
+    public int shape;
+    public bool enabled = true;
+    public bool isTrigger;
+    public Vector2 offset;
+    public Vector2 size;
+    public float radius;
+    public float[] pointsFlat;
 }
 
 [Serializable]

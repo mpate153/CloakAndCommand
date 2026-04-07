@@ -393,7 +393,10 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.SprinterLeave:
                 if (OffScreenSpawn2D.IsBeyondView(transform.position, Camera.main, _sprOffscreenMargin))
+                {
+                    DestroyedEnemySaveTracker.RegisterKilledEnemyRoot(transform.root);
                     Destroy(gameObject);
+                }
                 break;
         }
     }

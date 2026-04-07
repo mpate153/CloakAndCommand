@@ -138,6 +138,7 @@ public class TDEnemyProperties: MonoBehaviour
             TDEnemyCount.Instance.IncrementDefeat();
             TDEnemyCount.Instance.CheckVictory();
             Debug.Log("Defeated: " + TDEnemyCount.Instance.GetDefeatCount());
+            DestroyedEnemySaveTracker.RegisterKilledEnemyRoot(transform.root);
             Destroy(gameObject);
         }
         Move(); //Move is used since Update cannot be disabled; Enabled set to false stops enemy movement
@@ -207,6 +208,7 @@ public class TDEnemyProperties: MonoBehaviour
                 TDEnemyCount.Instance.CheckVictory();
                 targetObjectiveObject.GetComponent<TDObjectiveHealth>().DecrementHealth(damage);
                 targetObjectiveObject.GetComponent<TDObjectiveHealth>().CheckHealth();
+                DestroyedEnemySaveTracker.RegisterKilledEnemyRoot(transform.root);
                 Destroy(gameObject);
             }
         }
